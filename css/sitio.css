@@ -178,9 +178,11 @@ main .contenedor,
   padding-block: var(--s-8);
 }
 
+/* width: 100% evita que .contenedor se encoja y se centre dentro de la rejilla del hero: así el texto queda alineado con las secciones de abajo */
 .hero__contenido {
   position: relative;
   z-index: 1;
+  width: 100%;
 }
 
 .hero h1 {

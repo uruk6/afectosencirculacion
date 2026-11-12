@@ -57,6 +57,16 @@
   background: linear-gradient(135deg, var(--tinta) 0%, var(--tinta-2) 45%, var(--coral) 130%);
 }
 
+.ficha__foto {
+  overflow: hidden;
+}
+
+.ficha__foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .ficha__iniciales {
   font-family: var(--fuente-titulos);
   font-size: var(--fs-700);
