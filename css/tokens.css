@@ -1,0 +1,115 @@
+/* Tokens de diseño · prototipo "Afectos en circulación".
+   Valores de la guía del 19/10/2026. Contrastes WCAG calculados (relación sobre el fondo indicado).
+   Regla: ningún otro archivo escribe colores a mano; todo sale de estas variables. */
+
+:root {
+  /* Marca */
+  --tinta: #12101C;
+  --tinta-2: #1C1930;               /* superficie elevada sobre tinta */
+  --papel: #F5EFE6;
+  --papel-2: #EBE3D6;               /* superficie elevada sobre papel */
+  --texto: #1B1726;                 /* 15,35:1 sobre papel */
+  --texto-suave: #4A4560;           /* 7,95:1 sobre papel */
+  --texto-suave-claro: #B9B3CC;     /* 9,30:1 sobre tinta */
+  --coral: #E8445A;                 /* 4,84:1 sobre tinta · 3,40:1 sobre papel: sobre papel solo texto grande, iconos y gráficos */
+  --coral-texto: #BE2840;           /* 5,15:1 sobre papel: enlaces y texto pequeño sobre papel */
+  --frio: #8CC8FF;                  /* 10,59:1 sobre tinta */
+  --frio-papel: #3B5BDB;            /* 4,96:1 sobre papel */
+  --ambar: #FFB454;                 /* 10,66:1 sobre tinta · NO usar sobre papel (1,54:1) */
+
+  /* Tipografía (fuentes alojadas en assets/fonts) */
+  --fuente-titulos: "Fraunces", Georgia, "Times New Roman", serif;
+  --fuente-texto: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fs-300: clamp(0.8125rem, 0.79rem + 0.12vw, 0.875rem);
+  --fs-400: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --fs-500: clamp(1.2rem, 1.1rem + 0.5vw, 1.45rem);
+  --fs-600: clamp(1.5rem, 1.25rem + 1.2vw, 2.1rem);
+  --fs-700: clamp(2rem, 1.5rem + 2.4vw, 3.4rem);
+  --fs-800: clamp(2.6rem, 1.6rem + 4.6vw, 5.2rem);
+  --interlineado-texto: 1.6;
+  --interlineado-titulo: 1.08;
+
+  /* Espacio, forma, capas */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4.5rem;
+  --s-9: 7rem;
+  --radio-s: 8px;
+  --radio-m: 16px;
+  --radio-l: 28px;
+  --radio-pildora: 999px;
+  --ancho-max: 1180px;
+  --ancho-texto: 68ch;
+  --gutter: clamp(1rem, 4vw, 2rem);
+  --altura-cabecera: 4.25rem;
+
+  /* Movimiento */
+  --t-rapido: 140ms;
+  --t-medio: 260ms;
+  --curva: cubic-bezier(0.22, 0.8, 0.28, 1);
+
+  /* Valores por defecto (tema papel) para elementos fuera de una sección .tema-* */
+  --fondo: var(--papel);
+  --superficie: var(--papel-2);
+  --color-texto: var(--texto);
+  --color-suave: var(--texto-suave);
+  --acento: var(--coral);
+  --acento-texto: var(--coral-texto);
+  --enlace: var(--coral-texto);
+  --borde: rgba(27, 23, 38, 0.18);
+  --foco: var(--frio-papel);
+  --boton-fondo: var(--tinta);
+  --boton-texto: var(--papel);
+}
+
+/* Temas de sección: la sección fija fondo, texto y la paleta del campo de partículas. */
+.tema-tinta {
+  --fondo: var(--tinta);
+  --superficie: var(--tinta-2);
+  --color-texto: var(--papel);
+  --color-suave: var(--texto-suave-claro);
+  --acento: var(--coral);
+  --acento-texto: var(--coral);
+  --enlace: var(--frio);
+  --borde: rgba(245, 239, 230, 0.16);
+  --foco: var(--ambar);
+  --boton-fondo: var(--ambar);
+  --boton-texto: var(--tinta);
+  --part-punto: rgba(245, 239, 230, 0.30);
+  --part-azul: #7C9BFF;
+  --part-violeta: #A98BFF;
+  --part-magenta: #E85A8F;
+  --part-rojo: #FF6B7F;
+  --part-naranja: #FFA35C;
+  --part-amarillo: #FFD166;
+  background: var(--fondo);
+  color: var(--color-texto);
+}
+
+.tema-papel {
+  --fondo: var(--papel);
+  --superficie: var(--papel-2);
+  --color-texto: var(--texto);
+  --color-suave: var(--texto-suave);
+  --acento: var(--coral);
+  --acento-texto: var(--coral-texto);
+  --enlace: var(--coral-texto);
+  --borde: rgba(27, 23, 38, 0.18);
+  --foco: var(--frio-papel);
+  --boton-fondo: var(--tinta);
+  --boton-texto: var(--papel);
+  --part-punto: rgba(18, 16, 28, 0.26);
+  --part-azul: #3B5BDB;
+  --part-violeta: #7A4FC8;
+  --part-magenta: #C2395E;
+  --part-rojo: #E8445A;
+  --part-naranja: #F08A3C;
+  --part-amarillo: #F2B93B;
+  background: var(--fondo);
+  color: var(--color-texto);
+}

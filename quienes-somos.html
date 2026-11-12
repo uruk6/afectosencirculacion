@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quiénes somos · Afectos en circulación · Prototipo</title>
+  <meta name="description" content="Equipo investigador, grupos de investigación Paideia y Psynergia y semillero Acedai del proyecto Afectos en circulación (prototipo visual).">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/sitio.css">
+  <link rel="stylesheet" href="css/paginas.css">
+  <link rel="stylesheet" href="css/equipo.css">
+  <script src="js/particulas.js" defer></script>
+  <script src="js/particulas-control.js" defer></script>
+  <script src="js/particulas-ui.js" defer></script>
+  <script src="js/nav.js" defer></script>
+</head>
+<body>
+  <canvas class="campo-fijo" data-particulas data-fijo aria-hidden="true"></canvas>
+  <a class="saltar-contenido" href="#contenido">Saltar al contenido</a>
+  <div class="banda-ejemplo">Prototipo visual · contenido de ejemplo</div>
+  <button class="boton boton--secundario boton--chico boton-pausa" type="button" data-pausa aria-pressed="false">Pausar movimiento</button>
+
+  <header class="cabecera tema-tinta">
+    <a class="logo" href="index.html">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true" focusable="false">
+        <ellipse cx="14" cy="14" rx="11" ry="6" fill="none" stroke="currentColor" stroke-width="1.75" transform="rotate(-24 14 14)" />
+        <circle cx="22.5" cy="10.2" r="2.6" fill="currentColor" />
+      </svg>
+      <span>Afectos en circulación</span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <button class="nav__alternar" type="button" aria-expanded="false" aria-controls="nav-lista">Menú</button>
+      <ul id="nav-lista" class="nav__lista">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="quienes-somos.html" aria-current="page">Quiénes somos</a></li>
+        <li><a href="que-hacemos.html">Qué hacemos</a></li>
+        <li><a href="resultados.html">Resultados</a></li>
+        <li><a href="participa.html">Participa</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="contenido">
+    <section class="hero hero--pagina tema-tinta">
+      <div class="hero__contenido contenedor">
+        <h1>Quiénes somos</h1>
+        <p class="hero__lead">Un equipo interdisciplinario de docentes, estudiantes y egresadas de psicología que investiga cómo se producen y negocian los afectos en entornos digitales (texto de ejemplo).</p>
+      </div>
+    </section>
+
+    <section class="seccion tema-papel" aria-labelledby="t-equipo">
+      <div class="contenedor">
+        <h2 id="t-equipo">El equipo</h2>
+        <figure class="foto-equipo">
+          <div class="foto-equipo__marco" role="img" aria-label="Espacio reservado para la foto del equipo">
+            <span class="foto-equipo__texto">Foto del equipo (por definir)</span>
+          </div>
+          <figcaption>Una sola luz y un solo fondo para todas las fotos (ejemplo)</figcaption>
+        </figure>
+        <ul class="equipo">
+          <li class="ficha">
+            <div class="ficha__foto" aria-hidden="true"><span class="ficha__iniciales">IP</span></div>
+            <h3 class="ficha__nombre">Nombre Apellido</h3>
+            <p class="ficha__rol">Investigador principal</p>
+            <p class="ficha__texto">Coordina el diseño teórico y metodológico del estudio sobre economías afectivas y subjetividad en redes (ejemplo).</p>
+          </li>
+          <li class="ficha">
+            <div class="ficha__foto" aria-hidden="true"><span class="ficha__iniciales">C1</span></div>
+            <h3 class="ficha__nombre">Nombre Apellido</h3>
+            <p class="ficha__rol">Coinvestigador</p>
+            <p class="ficha__texto">Acompaña el análisis discursivo de narrativas audiovisuales y los espacios de discusión grupal en campus (ejemplo).</p>
+          </li>
+          <li class="ficha">
+            <div class="ficha__foto" aria-hidden="true"><span class="ficha__iniciales">C2</span></div>
+            <h3 class="ficha__nombre">Nombre Apellido</h3>
+            <p class="ficha__rol">Coinvestigador</p>
+            <p class="ficha__texto">Indaga en los cruces entre psicología social, mediaciones tecnológicas y vínculos sexoafectivos juveniles (ejemplo).</p>
+          </li>
+          <li class="ficha">
+            <div class="ficha__foto" aria-hidden="true"><span class="ficha__iniciales">A1</span></div>
+            <h3 class="ficha__nombre">Nombre Apellido</h3>
+            <p class="ficha__rol">Asistente de investigación</p>
+            <p class="ficha__texto">Apoya la sistematización del corpus de publicaciones en Instagram y la codificación cualitativa preliminar (ejemplo).</p>
+          </li>
+          <li class="ficha">
+            <div class="ficha__foto" aria-hidden="true"><span class="ficha__iniciales">A2</span></div>
+            <h3 class="ficha__nombre">Nombre Apellido</h3>
+            <p class="ficha__rol">Asistente de investigación</p>
+            <p class="ficha__texto">Participa en la observación de tendencias en TikTok y en la facilitación de talleres con estudiantes (ejemplo).</p>
+          </li>
+          <li class="ficha">
+            <div class="ficha__foto" aria-hidden="true"><span class="ficha__iniciales">A3</span></div>
+            <h3 class="ficha__nombre">Nombre Apellido</h3>
+            <p class="ficha__rol">Asistente de investigación</p>
+            <p class="ficha__texto">Colabora en la gestión ética de datos, relatorías de campo y diseño de materiales de divulgación (ejemplo).</p>
+          </li>
+          <li class="ficha">
+            <div class="ficha__foto" aria-hidden="true"><span class="ficha__iniciales">GA</span></div>
+            <h3 class="ficha__nombre">Nombre Apellido</h3>
+            <p class="ficha__rol">Graduada de Areandina</p>
+            <p class="ficha__texto">Articula la transferencia de aprendizajes del proyecto con procesos formativos y de acompañamiento estudiantil (ejemplo).</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="seccion tema-tinta" aria-labelledby="t-grupos">
+      <div class="contenedor">
+        <h2 id="t-grupos">Grupos y semillero</h2>
+        <div class="lectura">
+          <p>El proyecto nace del trabajo conjunto entre grupos de investigación de las sedes Pereira y Bogotá de la Fundación Universitaria del Área Andina, en diálogo permanente con la formación investigativa estudiantil a través del semillero (ejemplo).</p>
+        </div>
+        <div class="rejilla">
+          <div class="bloque">
+            <h3>Paideia (sede Pereira)</h3>
+            <p>Grupo de investigación del Programa de Psicología en Pereira que lidera el trabajo de campo local, los círculos de conversación y la articulación con la comunidad universitaria (ejemplo).</p>
+          </div>
+          <div class="bloque">
+            <h3>Psynergia (sede Bogotá)</h3>
+            <p>Grupo de investigación aliado en Bogotá que aporta al diálogo intersedes, la revisión metodológica y el contraste conceptual sobre subjetividades digitales (ejemplo).</p>
+          </div>
+          <div class="bloque">
+            <h3>Semillero Acedai (Pereira)</h3>
+            <p>Espacio formativo donde estudiantes en curso participan activamente en la lectura crítica de medios, el registro de hallazgos y la co-creación de piezas de divulgación (ejemplo).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie tema-papel">
+    <div class="contenedor">
+      <p><em>Economías Afectivas y el Sujeto Ideal: un Análisis de las Narrativas de Pareja en Instagram y Tiktok para Estudiantes Universitarios en Pereira</em></p>
+      <p>Código del proyecto: CV2026-PA-P-13644 · Respaldo institucional: Fundación Universitaria del Área Andina, Programa de Psicología, Pereira.</p>
+      <ul class="pie__lista">
+        <li>Grupos de investigación: Paideia y Psynergia</li>
+        <li>Semillero de investigación: Acedai</li>
+        <li>Línea de apoyo de Bienestar Universitario: contacto por definir</li>
+        <li>Licencia: por definir</li>
+      </ul>
+      <ul class="pie__enlaces">
+        <li><a href="#politica-datos">Política de tratamiento de datos (por definir)</a></li>
+        <li><a href="#accesibilidad">Declaración de accesibilidad (por definir)</a></li>
+      </ul>
+    </div>
+  </footer>
+</body>
+</html>

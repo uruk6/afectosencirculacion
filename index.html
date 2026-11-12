@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Afectos en circulación · Prototipo</title>
+  <meta name="description" content="Prototipo visual de divulgación sobre economías afectivas y narrativas de pareja en Instagram y TikTok entre estudiantes universitarios en Pereira.">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/sitio.css">
+  <link rel="stylesheet" href="css/inicio.css">
+  <script src="js/particulas.js" defer></script>
+  <script src="js/particulas-control.js" defer></script>
+  <script src="js/particulas-ui.js" defer></script>
+  <script src="js/nav.js" defer></script>
+  <script src="js/tarjetas.js" defer></script>
+</head>
+<body>
+  <canvas class="campo-fijo" data-particulas data-fijo aria-hidden="true"></canvas>
+  <a class="saltar-contenido" href="#contenido">Saltar al contenido</a>
+  <div class="banda-ejemplo">Prototipo visual · contenido de ejemplo</div>
+  <button class="boton boton--secundario boton--chico boton-pausa" type="button" data-pausa aria-pressed="false">Pausar movimiento</button>
+
+  <header class="cabecera tema-tinta">
+    <a class="logo" href="index.html">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true" focusable="false">
+        <ellipse cx="14" cy="14" rx="11" ry="6" fill="none" stroke="currentColor" stroke-width="1.75" transform="rotate(-24 14 14)" />
+        <circle cx="22.5" cy="10.2" r="2.6" fill="currentColor" />
+      </svg>
+      <span>Afectos en circulación</span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <button class="nav__alternar" type="button" aria-expanded="false" aria-controls="nav-lista">Menú</button>
+      <ul id="nav-lista" class="nav__lista">
+        <li><a href="index.html" aria-current="page">Inicio</a></li>
+        <li><a href="quienes-somos.html">Quiénes somos</a></li>
+        <li><a href="que-hacemos.html">Qué hacemos</a></li>
+        <li><a href="resultados.html">Resultados</a></li>
+        <li><a href="participa.html">Participa</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="contenido">
+    <section class="hero tema-tinta">
+      <div class="hero__contenido contenedor">
+        <h1>¿Cómo circula el afecto cuando lo miramos en una pantalla?</h1>
+        <p class="hero__lead">Exploramos las narrativas de pareja que circulan en Instagram y TikTok entre estudiantes universitarios en Pereira. Este recorrido reúne preguntas, hallazgos preliminares y espacios de conversación abierta (texto de ejemplo).</p>
+        <div class="hero__acciones">
+          <a class="boton" href="resultados.html">Ver resultados</a>
+          <a class="boton boton--secundario" href="que-hacemos.html">Qué hacemos</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="tarjetas tema-papel" aria-labelledby="t-tarjetas">
+      <div class="contenedor">
+        <h2 id="t-tarjetas">Por dónde empezar</h2>
+        <p>Recorre las secciones del proyecto para conocer al equipo, la metodología, los hallazgos de ejemplo y las formas de participar.</p>
+        <ul class="tarjetas__lista">
+          <li>
+            <a class="tarjeta" href="quienes-somos.html">
+              <img class="tarjeta__ilustracion" src="assets/img/ilustracion-quienes-somos.svg" alt="" width="320" height="200">
+              <h3 class="tarjeta__titulo">Quiénes somos</h3>
+              <p class="tarjeta__texto">Conoce a las investigadoras, docentes y estudiantes del semillero que impulsan este estudio (ejemplo).</p>
+              <span class="tarjeta__flecha" aria-hidden="true">→</span>
+            </a>
+          </li>
+          <li>
+            <a class="tarjeta" href="que-hacemos.html">
+              <img class="tarjeta__ilustracion" src="assets/img/ilustracion-que-hacemos.svg" alt="" width="320" height="200">
+              <h3 class="tarjeta__titulo">Qué hacemos</h3>
+              <p class="tarjeta__texto">Revisa las preguntas, las fases metodológicas y los cuidados éticos con los que trabajamos (ejemplo).</p>
+              <span class="tarjeta__flecha" aria-hidden="true">→</span>
+            </a>
+          </li>
+          <li>
+            <a class="tarjeta" href="resultados.html">
+              <img class="tarjeta__ilustracion" src="assets/img/ilustracion-resultados.svg" alt="" width="320" height="200">
+              <h3 class="tarjeta__titulo">Resultados</h3>
+              <p class="tarjeta__texto">Explora las tensiones entre perfección estática e intimidad mimética en las narrativas analizadas (ejemplo).</p>
+              <span class="tarjeta__flecha" aria-hidden="true">→</span>
+            </a>
+          </li>
+          <li>
+            <a class="tarjeta" href="participa.html">
+              <img class="tarjeta__ilustracion" src="assets/img/ilustracion-participa.svg" alt="" width="320" height="200">
+              <h3 class="tarjeta__titulo">Participa</h3>
+              <p class="tarjeta__texto">Súmate a los talleres, círculos de conversación y actividades abiertas en el campus (ejemplo).</p>
+              <span class="tarjeta__flecha" aria-hidden="true">→</span>
+            </a>
+          </li>
+          <li>
+            <a class="tarjeta" href="contacto.html">
+              <img class="tarjeta__ilustracion" src="assets/img/ilustracion-contacto.svg" alt="" width="320" height="200">
+              <h3 class="tarjeta__titulo">Contacto</h3>
+              <p class="tarjeta__texto">Escríbenos para resolver dudas sobre la investigación, pedir material o proponer diálogos (ejemplo).</p>
+              <span class="tarjeta__flecha" aria-hidden="true">→</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="datos tema-tinta" aria-labelledby="t-datos">
+      <div class="contenedor">
+        <h2 id="t-datos">Lo que encontramos, en una mirada</h2>
+        <ul class="datos__lista">
+          <li class="dato">
+            <p class="dato__cifra">00 %</p>
+            <p class="dato__texto">De las publicaciones revisadas asocia el cuidado afectivo con muestras públicas y constantes en pantalla (ejemplo)</p>
+          </li>
+          <li class="dato">
+            <p class="dato__cifra">0 de 0</p>
+            <p class="dato__texto">Estudiantes participantes mencionan comparar su relación con guiones virales al menos una vez por semana (ejemplo)</p>
+          </li>
+          <li class="dato">
+            <p class="dato__cifra">000</p>
+            <p class="dato__texto">Piezas audiovisuales comentadas colectivamente durante los talleres de lectura crítica de medios (ejemplo)</p>
+          </li>
+        </ul>
+        <aside class="apoyo tema-papel">
+          <h3>Si algo de esto te inquieta</h3>
+          <p>Hablar sobre vínculos, expectativas y redes puede mover preguntas personales. Si necesitas acompañamiento psicológico o escucha profesional, puedes acudir a Bienestar Universitario (contacto por definir).</p>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie tema-papel">
+    <div class="contenedor">
+      <p><em>Economías Afectivas y el Sujeto Ideal: un Análisis de las Narrativas de Pareja en Instagram y Tiktok para Estudiantes Universitarios en Pereira</em></p>
+      <p>Código del proyecto: CV2026-PA-P-13644 · Respaldo institucional: Fundación Universitaria del Área Andina, Programa de Psicología, Pereira.</p>
+      <ul class="pie__lista">
+        <li>Grupos de investigación: Paideia y Psynergia</li>
+        <li>Semillero de investigación: Acedai</li>
+        <li>Línea de apoyo de Bienestar Universitario: contacto por definir</li>
+        <li>Licencia: por definir</li>
+      </ul>
+      <ul class="pie__enlaces">
+        <li><a href="#politica-datos">Política de tratamiento de datos (por definir)</a></li>
+        <li><a href="#accesibilidad">Declaración de accesibilidad (por definir)</a></li>
+      </ul>
+    </div>
+  </footer>
+</body>
+</html>

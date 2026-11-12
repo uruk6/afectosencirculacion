@@ -1,0 +1,316 @@
+/* Estructura y componentes compartidos de Resultados · "Afectos en circulación" */
+
+.pagina-cuerpo,
+.pagina-cuerpo main .tema-papel {
+  --fondo: var(--tinta);
+  --superficie: var(--tinta-2);
+  --color-texto: var(--papel);
+  --color-suave: var(--texto-suave-claro);
+  --acento: var(--coral);
+  --acento-texto: var(--coral);
+  --enlace: var(--frio);
+  --foco: var(--ambar);
+  --boton-fondo: var(--ambar);
+  --boton-texto: var(--tinta);
+}
+
+.pagina-cuerpo {
+  background-color: var(--tinta);
+  color: var(--papel);
+  overflow-x: clip;
+}
+
+.fondo-cuerpo {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.fondo-cuerpo canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.pagina-cuerpo > header,
+.pagina-cuerpo .cabecera {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background-color: var(--tinta);
+}
+
+/* El pie conserva su tema papel (fondo claro opaco) y queda por encima del fondo fijo */
+.pagina-cuerpo > main,
+.pagina-cuerpo > footer,
+.pagina-cuerpo .pie {
+  position: relative;
+  z-index: 1;
+}
+
+.pagina-cuerpo main .tema-tinta,
+.pagina-cuerpo main .tema-papel {
+  background: transparent;
+}
+
+.pagina-cuerpo section[id] {
+  scroll-margin-top: var(--altura-cabecera);
+}
+
+/* Escala más contenida en Resultados: títulos, cifras y cajas más pequeños y una columna de lectura más angosta,
+   para que se vea el cuerpo de fondo a los lados y las cajas no pesen tanto. */
+.pagina-cuerpo main {
+  --fs-500: clamp(1.05rem, 1rem + 0.25vw, 1.2rem);
+  --fs-600: clamp(1.25rem, 1.12rem + 0.5vw, 1.55rem);
+  --fs-700: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
+}
+
+.pagina-cuerpo main .contenedor {
+  max-width: 60rem;
+}
+
+.pagina-cuerpo main .seccion {
+  padding-block: var(--s-6);
+}
+
+.pagina-cuerpo main .seccion h2 {
+  font-size: var(--fs-600);
+}
+
+/* Portada sin hero y navegación secundaria */
+
+.portada-cuerpo {
+  padding-top: var(--s-7);
+  padding-bottom: var(--s-5);
+}
+
+.portada-cuerpo h1 {
+  font-size: var(--fs-700);
+  max-width: 22ch;
+}
+
+.portada-cuerpo__lead {
+  max-width: var(--ancho-texto);
+  margin-top: var(--s-4);
+  font-size: var(--fs-500);
+  color: var(--color-suave);
+}
+
+.subnav {
+  margin-top: var(--s-5);
+}
+
+.subnav__lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.subnav__enlace {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--s-2) var(--s-4);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-pildora);
+  background-color: var(--superficie);
+  color: var(--color-texto);
+  font-size: var(--fs-300);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color var(--t-rapido) var(--curva), border-color var(--t-rapido) var(--curva), color var(--t-rapido) var(--curva);
+}
+
+.subnav__enlace:hover {
+  border-color: var(--ambar);
+  color: var(--ambar);
+}
+
+.subnav__enlace:focus-visible {
+  outline: 3px solid var(--foco);
+  outline-offset: 3px;
+}
+
+.subnav__enlace[aria-current="page"],
+.subnav__enlace[aria-current="true"] {
+  background-color: var(--ambar);
+  border-color: var(--ambar);
+  color: var(--tinta);
+}
+
+/* Migas de pan */
+
+.migas {
+  margin-bottom: var(--s-4);
+  font-size: var(--fs-300);
+  color: var(--color-suave);
+}
+
+.migas ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.migas li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.migas li + li::before {
+  content: "›";
+  color: var(--color-suave);
+}
+
+.migas a {
+  color: var(--enlace);
+}
+
+/* Cajas, pilas, puertas y avisos */
+
+.caja {
+  background-color: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-m);
+  padding: var(--s-4) var(--s-5);
+  color: var(--color-texto);
+}
+
+.pila {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-5);
+}
+
+.puertas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: var(--s-4);
+  list-style: none;
+  padding: 0;
+}
+
+a.puerta {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: var(--s-2);
+  background-color: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-m);
+  padding: var(--s-4) var(--s-5);
+  color: var(--color-texto);
+  text-decoration: none;
+  transition: transform var(--t-rapido) var(--curva), border-color var(--t-rapido) var(--curva);
+}
+
+a.puerta:hover {
+  transform: translateY(-2px);
+  border-color: var(--ambar);
+}
+
+a.puerta:focus-visible {
+  outline: 3px solid var(--foco);
+  outline-offset: 3px;
+}
+
+a.puerta h3 {
+  font-size: var(--fs-500);
+  color: var(--ambar);
+}
+
+a.puerta p {
+  color: var(--color-suave);
+}
+
+.aviso {
+  background-color: var(--superficie);
+  border: 1px solid var(--borde);
+  border-left: 4px solid var(--ambar);
+  border-radius: var(--radio-m);
+  padding: var(--s-4) var(--s-5);
+  color: var(--color-texto);
+}
+
+/* Etiquetas de estatus (.marca) y diferencia entre plataformas (.insignia) */
+
+.marca,
+.insignia {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15em 0.7em;
+  border-radius: var(--radio-pildora);
+  background-color: var(--fondo);
+  font-size: var(--fs-300);
+  font-weight: 600;
+  line-height: 1.35;
+  margin-right: var(--s-2);
+  text-align: center;
+}
+
+/* Etiqueta + texto: la etiqueta queda centrada con respecto al texto y el texto largo no se
+   enrolla por debajo de ella. En columnas angostas (panel, móvil) la etiqueta va encima. */
+.con-marca {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-2);
+}
+
+.con-marca > .marca,
+.con-marca > .insignia {
+  margin-right: 0;
+  max-width: 100%;
+}
+
+.con-marca__texto {
+  min-width: 0;
+}
+
+@media (min-width: 720px) {
+  .caja .con-marca {
+    display: grid;
+    grid-template-columns: 9.5rem minmax(0, 1fr);
+    align-items: center;
+    column-gap: var(--s-4);
+  }
+
+  .caja .con-marca > .marca,
+  .caja .con-marca > .insignia {
+    justify-content: center;
+    justify-self: start;
+  }
+}
+
+/* Etiqueta suelta encima de un título o párrafo */
+.caja > .marca,
+.caja > .insignia {
+  margin-bottom: var(--s-2);
+}
+
+.marca--cuenta { border: 1px solid var(--ambar); color: var(--ambar); }
+.marca--lectura { border: 1px dashed var(--frio); color: var(--frio); }
+.marca--hipotesis { border: 1px dotted var(--ambar); color: var(--color-texto); font-style: italic; }
+.marca--limite { border: 1px solid var(--coral); border-left-width: 4px; color: var(--color-suave); }
+.marca--encuesta { border: 3px double var(--frio); color: var(--frio); }
+
+.insignia--real { border: 2px solid var(--ambar); color: var(--ambar); }
+.insignia--mezclada { border: 3px double var(--frio); color: var(--frio); }
+.insignia--artefacto { border: 1px dashed var(--coral); color: var(--color-texto); }
+.insignia--ninguna { border: 1px dotted var(--borde); color: var(--color-suave); }
+
+@media (prefers-reduced-motion: reduce) {
+  .subnav__enlace,
+  a.puerta,
+  a.puerta:hover {
+    transition: none;
+    transform: none;
+  }
+}

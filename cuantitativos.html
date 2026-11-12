@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lo que dicen los estudiantes · Afectos en circulación · Prototipo</title>
+  <meta name="description" content="Encuesta anónima en línea a estudiantes de Psicología, con los resultados que más se relacionan con los tres objetivos del estudio.">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/sitio.css">
+  <link rel="stylesheet" href="css/paginas.css">
+  <link rel="stylesheet" href="css/cuerpo.css">
+  <link rel="stylesheet" href="css/datos.css">
+  <script src="js/nav.js" defer></script>
+  <script src="js/silueta.js" defer></script>
+  <script src="js/fondo-cuerpo.js" defer></script>
+  <script src="js/encuesta.js" defer></script>
+  <script src="js/barras.js" defer></script>
+  <script src="js/cuantitativos-pagina.js" defer></script>
+</head>
+<body class="pagina-cuerpo">
+  <div class="fondo-cuerpo tema-tinta" aria-hidden="true"><canvas data-fondo-cuerpo></canvas></div>
+  <a class="saltar-contenido" href="#contenido">Saltar al contenido</a>
+  <div class="banda-ejemplo">Prototipo visual · resultados reales en revisión</div>
+
+  <header class="cabecera tema-tinta">
+    <a class="logo" href="index.html">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true" focusable="false">
+        <ellipse cx="14" cy="14" rx="11" ry="6" fill="none" stroke="currentColor" stroke-width="1.75" transform="rotate(-24 14 14)" />
+        <circle cx="22.5" cy="10.2" r="2.6" fill="currentColor" />
+      </svg>
+      <span>Afectos en circulación</span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <button class="nav__alternar" type="button" aria-expanded="false" aria-controls="nav-lista">Menú</button>
+      <ul id="nav-lista" class="nav__lista">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="quienes-somos.html">Quiénes somos</a></li>
+        <li><a href="que-hacemos.html">Qué hacemos</a></li>
+        <li><a href="resultados.html" aria-current="page">Resultados</a></li>
+        <li><a href="participa.html">Participa</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="contenido">
+    <section class="portada-cuerpo tema-tinta">
+      <div class="contenedor">
+        <h1>Lo que dicen los estudiantes</h1>
+        <p class="portada-cuerpo__lead">Encuesta anónima en línea a estudiantes de Psicología, con los resultados que más se relacionan con los tres objetivos del estudio.</p>
+        <nav class="subnav" aria-label="Resultados">
+          <ul class="subnav__lista">
+            <li><a class="subnav__enlace" href="resultados.html">Resumen</a></li>
+            <li><a class="subnav__enlace" href="cuantitativos.html" aria-current="page">Lo que dicen los estudiantes</a></li>
+            <li><a class="subnav__enlace" href="cualitativos.html">Lo que circula en los videos</a></li>
+            <li><a class="subnav__enlace" href="conclusiones.html">Qué se desprende</a></li>
+          </ul>
+        </nav>
+      </div>
+    </section>
+
+    <div class="seccion tema-tinta">
+      <div class="contenedor pila">
+        <div data-muestra></div>
+        <div class="pila" data-secciones></div>
+        <noscript>
+          <p class="caja">Para consultar los gráficos y resultados de la encuesta en este prototipo es necesario activar JavaScript.</p>
+        </noscript>
+      </div>
+    </div>
+  </main>
+
+  <footer class="pie tema-papel">
+    <div class="contenedor">
+      <p><em>Economías Afectivas y el Sujeto Ideal: un Análisis de las Narrativas de Pareja en Instagram y Tiktok para Estudiantes Universitarios en Pereira</em></p>
+      <p>Código del proyecto: CV2026-PA-P-13644 · Respaldo institucional: Fundación Universitaria del Área Andina, Programa de Psicología, Pereira.</p>
+      <ul class="pie__lista">
+        <li>Grupos de investigación: Paideia y Psynergia</li>
+        <li>Semillero de investigación: Acedai</li>
+        <li>Línea de apoyo de Bienestar Universitario: contacto por definir</li>
+        <li>Licencia: por definir</li>
+      </ul>
+      <ul class="pie__enlaces">
+        <li><a href="#politica-datos">Política de tratamiento de datos (por definir)</a></li>
+        <li><a href="#accesibilidad">Declaración de accesibilidad (por definir)</a></li>
+      </ul>
+    </div>
+  </footer>
+</body>
+</html>

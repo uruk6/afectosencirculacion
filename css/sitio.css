@@ -1,0 +1,203 @@
+/* Cabecera, navegación principal y pie de página · "Afectos en circulación" */
+
+.cabecera {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  min-height: var(--altura-cabecera);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding-block: var(--s-2);
+  padding-inline: var(--gutter);
+  border-bottom: 1px solid var(--borde);
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-family: var(--fuente-titulos);
+  font-size: var(--fs-500);
+  font-weight: 600;
+  color: var(--color-texto);
+  text-decoration: none;
+}
+
+.nav__alternar {
+  display: none;
+  padding: var(--s-2) var(--s-4);
+  border: 2px solid var(--color-texto);
+  border-radius: var(--radio-pildora);
+  background: transparent;
+  color: var(--color-texto);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.js .nav__alternar {
+  display: inline-flex;
+  align-items: center;
+}
+
+.nav__lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.js .nav__lista {
+  display: none;
+}
+
+.nav__alternar[aria-expanded="true"] + .nav__lista {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  padding: var(--s-4) var(--gutter);
+  background-color: var(--superficie);
+  border-bottom: 1px solid var(--borde);
+}
+
+.nav__lista a {
+  display: block;
+  padding: var(--s-2) var(--s-3);
+  border-radius: var(--radio-pildora);
+  color: var(--color-texto);
+  text-decoration: none;
+  transition: background-color var(--t-rapido) var(--curva);
+}
+
+.nav__lista a:hover {
+  background-color: var(--superficie);
+}
+
+.nav__lista a[aria-current="page"] {
+  text-decoration: underline;
+  text-decoration-color: var(--acento);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 0.35em;
+}
+
+@media (min-width: 1100px) {
+  .nav__alternar,
+  .js .nav__alternar {
+    display: none;
+  }
+
+  .nav__lista,
+  .js .nav__lista,
+  .nav__alternar[aria-expanded="true"] + .nav__lista {
+    display: flex;
+    flex-direction: row;
+    position: static;
+    background: none;
+    border: 0;
+    padding: 0;
+    gap: var(--s-1);
+  }
+}
+
+.pie {
+  padding-top: var(--s-8);
+  padding-bottom: var(--s-9);
+  border-top: 1px solid var(--borde);
+  font-size: var(--fs-300);
+}
+
+.pie p {
+  max-width: var(--ancho-texto);
+  margin-bottom: var(--s-4);
+}
+
+.pie__lista,
+.pie__enlaces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-5);
+  list-style: none;
+  padding: 0;
+}
+
+.pie__lista {
+  margin-bottom: var(--s-4);
+  color: var(--color-suave);
+}
+
+.pie a {
+  color: var(--enlace);
+}
+
+/* Campo de partículas: un canvas fijo del tamaño de la ventana, por detrás del contenido de toda la página.
+   Las secciones conservan su fondo (oscuro o claro) y NO llevan position, para que ese fondo quede debajo del canvas;
+   el contenido (.contenedor) va por encima y las cajas opacas (tarjetas, bloques, fichas) lo tapan. */
+
+.campo-fijo {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+main .contenedor,
+.pie .contenedor {
+  position: relative;
+  z-index: 1;
+}
+
+.boton-pausa {
+  position: fixed;
+  right: var(--s-4);
+  bottom: var(--s-4);
+  z-index: 50;
+  background-color: var(--tinta);
+  color: var(--papel);
+  border-color: var(--papel);
+}
+
+.boton-pausa:hover {
+  background-color: var(--tinta-2);
+}
+
+/* Portada (compartida por inicio y páginas interiores) */
+
+.hero {
+  display: grid;
+  align-items: center;
+  min-height: max(34rem, calc(100svh - var(--altura-cabecera)));
+  padding-block: var(--s-8);
+}
+
+.hero__contenido {
+  position: relative;
+  z-index: 1;
+}
+
+.hero h1 {
+  max-width: 16ch;
+  font-size: var(--fs-800);
+}
+
+.hero__lead {
+  max-width: 52ch;
+  margin-top: var(--s-5);
+  font-size: var(--fs-500);
+  color: var(--color-suave);
+}
+
+/* En pantallas angostas el botón de pausa sube para no chocar con la banda de «contenido de ejemplo» */
+@media (max-width: 640px) {
+  .boton-pausa {
+    bottom: calc(var(--s-4) + 2.75rem);
+  }
+}

@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Participa · Afectos en circulación · Prototipo</title>
+  <meta name="description" content="Registro de interés para recibir resultados y conocer futuras actividades del proyecto Afectos en circulación (prototipo visual con contenido de ejemplo).">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/sitio.css">
+  <link rel="stylesheet" href="css/paginas.css">
+  <link rel="stylesheet" href="css/formulario.css">
+  <script src="js/particulas.js" defer></script>
+  <script src="js/particulas-control.js" defer></script>
+  <script src="js/particulas-ui.js" defer></script>
+  <script src="js/nav.js" defer></script>
+</head>
+<body>
+  <canvas class="campo-fijo" data-particulas data-fijo aria-hidden="true"></canvas>
+  <a class="saltar-contenido" href="#contenido">Saltar al contenido</a>
+  <div class="banda-ejemplo">Prototipo visual · contenido de ejemplo</div>
+  <button class="boton boton--secundario boton--chico boton-pausa" type="button" data-pausa aria-pressed="false">Pausar movimiento</button>
+
+  <header class="cabecera tema-tinta">
+    <a class="logo" href="index.html">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true" focusable="false">
+        <ellipse cx="14" cy="14" rx="11" ry="6" fill="none" stroke="currentColor" stroke-width="1.75" transform="rotate(-24 14 14)" />
+        <circle cx="22.5" cy="10.2" r="2.6" fill="currentColor" />
+      </svg>
+      <span>Afectos en circulación</span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <button class="nav__alternar" type="button" aria-expanded="false" aria-controls="nav-lista">Menú</button>
+      <ul id="nav-lista" class="nav__lista">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="quienes-somos.html">Quiénes somos</a></li>
+        <li><a href="que-hacemos.html">Qué hacemos</a></li>
+        <li><a href="resultados.html">Resultados</a></li>
+        <li><a href="participa.html" aria-current="page">Participa</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="contenido">
+    <section class="hero hero--pagina tema-tinta">
+      <div class="hero__contenido contenedor">
+        <h1>Participa</h1>
+        <p class="hero__lead">Si quieres conocer los hallazgos cuando estén listos o sumarte a futuros espacios de conversación en el campus, puedes dejarnos tu contacto aquí (texto de ejemplo).</p>
+      </div>
+    </section>
+
+    <section class="seccion tema-papel" aria-labelledby="t-registro">
+      <div class="contenedor">
+        <h2 id="t-registro">Déjanos tus datos si quieres seguir en contacto</h2>
+        <div class="lectura">
+          <p>Por ahora este formulario funciona únicamente como un registro de interés; la fase 2 del proyecto es todavía una proyección sujeta a la apertura de nuevas convocatorias y actividades participativas (ejemplo).</p>
+        </div>
+
+        <div class="bloque bloque--mensaje">
+          <h3>Lo importante</h3>
+          <p>Dejar tus datos no te compromete a nada. Te escribiremos solo si se abre una fase nueva o hay resultados para compartir. No usamos estos datos para la investigación actual.</p>
+        </div>
+
+        <form class="formulario" action="#" method="post" novalidate>
+          <div class="campo">
+            <label for="correo">Correo (obligatorio)</label>
+            <input type="email" id="correo" name="correo" autocomplete="email" required aria-describedby="ayuda-correo">
+            <p class="ayuda" id="ayuda-correo">Solo lo usaremos para escribirte sobre este proyecto.</p>
+          </div>
+
+          <div class="campo">
+            <label for="nombre">Nombre (opcional)</label>
+            <input type="text" id="nombre" name="nombre" autocomplete="name">
+          </div>
+
+          <fieldset class="grupo">
+            <legend>Me interesa</legend>
+            <div class="opcion">
+              <input type="checkbox" id="interes-resultados" name="intereses" value="resultados">
+              <label for="interes-resultados">Recibir los resultados</label>
+            </div>
+            <div class="opcion">
+              <input type="checkbox" id="interes-fase2" name="intereses" value="fase-2">
+              <label for="interes-fase2">Participar en la fase 2</label>
+            </div>
+            <div class="opcion">
+              <input type="checkbox" id="interes-encuesta" name="intereses" value="encuesta">
+              <label for="interes-encuesta">Participar en una encuesta breve cuando se abra</label>
+            </div>
+          </fieldset>
+
+          <div class="campo">
+            <label for="perfil">Soy (opcional)</label>
+            <select id="perfil" name="perfil">
+              <option value="">Elige una opción</option>
+              <option value="estudiante">Estudiante</option>
+              <option value="docente">Docente</option>
+              <option value="profesional">Profesional</option>
+              <option value="otro">Otro</option>
+            </select>
+          </div>
+
+          <div class="opcion">
+            <input type="checkbox" id="autoriza" name="autoriza" required>
+            <label for="autoriza">Autorizo el tratamiento de mis datos según la <a href="#politica-datos">política de datos (por definir)</a>.</label>
+          </div>
+
+          <button class="boton" type="submit" disabled>Enviar (deshabilitado en el prototipo)</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="seccion tema-tinta" aria-labelledby="t-apoyo">
+      <div class="contenedor">
+        <h2 id="t-apoyo">¿Necesitas hablar con alguien?</h2>
+        <div class="bloque">
+          <p>Si algún tema abordado en este proyecto despierta inquietudes personales o malestar emocional, puedes acudir al servicio de orientación y acompañamiento psicológico de Bienestar Universitario (contacto por definir).</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie tema-papel">
+    <div class="contenedor">
+      <p><em>Economías Afectivas y el Sujeto Ideal: un Análisis de las Narrativas de Pareja en Instagram y Tiktok para Estudiantes Universitarios en Pereira</em></p>
+      <p>Código del proyecto: CV2026-PA-P-13644 · Respaldo institucional: Fundación Universitaria del Área Andina, Programa de Psicología, Pereira.</p>
+      <ul class="pie__lista">
+        <li>Grupos de investigación: Paideia y Psynergia</li>
+        <li>Semillero de investigación: Acedai</li>
+        <li>Línea de apoyo de Bienestar Universitario: contacto por definir</li>
+        <li>Licencia: por definir</li>
+      </ul>
+      <ul class="pie__enlaces">
+        <li><a href="#politica-datos">Política de tratamiento de datos (por definir)</a></li>
+        <li><a href="#accesibilidad">Declaración de accesibilidad (por definir)</a></li>
+      </ul>
+    </div>
+  </footer>
+</body>
+</html>

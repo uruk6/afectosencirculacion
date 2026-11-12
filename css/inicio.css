@@ -1,0 +1,172 @@
+/* Estilos de la página de inicio: portada (hero), tarjetas, datos y bloque de apoyo */
+
+/* --- Hero --- */
+/* Reglas base de .hero, .hero__contenido y .hero__lead, y del campo de partículas fijo: ver sitio.css */
+
+.hero__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  margin-top: var(--s-6);
+}
+
+/* --- Tarjetas --- */
+.tarjetas {
+  padding-block: var(--s-8);
+}
+
+.tarjetas p {
+  max-width: var(--ancho-texto);
+  margin-top: var(--s-3);
+  color: var(--color-suave);
+}
+
+.tarjetas__lista {
+  list-style: none;
+  padding: 0;
+  margin-top: var(--s-6);
+  display: grid;
+  gap: var(--s-5);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .tarjetas__lista {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 960px) {
+  .tarjetas__lista {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .tarjetas__lista > li:nth-child(1),
+  .tarjetas__lista > li:nth-child(2),
+  .tarjetas__lista > li:nth-child(3) {
+    grid-column: span 2;
+  }
+
+  .tarjetas__lista > li:nth-child(4),
+  .tarjetas__lista > li:nth-child(5) {
+    grid-column: span 3;
+  }
+}
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  height: 100%;
+  padding: var(--s-5);
+  background-color: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-l);
+  color: var(--color-texto);
+  text-decoration: none;
+  transform: perspective(800px) rotateX(var(--inclinar-x, 0deg)) rotateY(var(--inclinar-y, 0deg));
+  transition: transform var(--t-medio) var(--curva), border-color var(--t-medio);
+}
+
+.tarjeta:hover,
+.tarjeta:focus,
+.tarjeta:focus-visible {
+  border-color: var(--acento);
+}
+
+/* Ilustración compacta, como un icono: antes ocupaba todo el ancho de la tarjeta */
+.tarjeta__ilustracion {
+  width: 6.5rem;
+  height: auto;
+  aspect-ratio: 8 / 5;
+  align-self: center;
+  border-radius: var(--radio-s);
+  object-fit: cover;
+}
+
+.tarjeta__titulo {
+  font-size: var(--fs-600);
+}
+
+.tarjeta__texto,
+.tarjetas .tarjeta__texto {
+  color: var(--color-suave);
+  margin-top: 0;
+}
+
+.tarjeta__flecha {
+  margin-top: auto;
+  align-self: flex-end;
+  font-size: var(--fs-500);
+  color: var(--acento-texto);
+  transition: transform var(--t-rapido);
+}
+
+.tarjeta:hover .tarjeta__flecha {
+  transform: translateX(6px);
+}
+
+/* --- Datos y apoyo --- */
+.datos {
+  padding-block: var(--s-8);
+}
+
+.datos__lista {
+  list-style: none;
+  padding: 0;
+  margin-top: var(--s-6);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-6);
+}
+
+@media (min-width: 820px) {
+  .datos__lista {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.dato {
+  border-top: 2px solid var(--acento);
+  padding-top: var(--s-4);
+}
+
+.dato__cifra {
+  font-family: var(--fuente-titulos);
+  font-size: var(--fs-800);
+  line-height: 1;
+  color: var(--ambar);
+}
+
+.dato__texto {
+  margin-top: var(--s-2);
+  color: var(--color-suave);
+  max-width: 34ch;
+}
+
+.apoyo {
+  margin-top: var(--s-8);
+  max-width: var(--ancho-texto);
+  padding: var(--s-6);
+  background-color: var(--superficie);
+  color: var(--color-texto);
+  border-radius: var(--radio-l);
+  border-left: 6px solid var(--coral);
+}
+
+.apoyo h3 {
+  font-size: var(--fs-500);
+}
+
+.apoyo p {
+  margin-top: var(--s-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tarjeta,
+  .tarjeta__flecha,
+  .tarjeta:hover .tarjeta__flecha {
+    transform: none;
+    transition: none;
+  }
+}

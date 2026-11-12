@@ -1,0 +1,328 @@
+/* Gráficos, tablas, bloques de síntesis y extensiones de cartografía · "Afectos en circulación" */
+
+/* Gráficos de barras */
+
+figure.grafico {
+  margin: 0;
+  display: grid;
+  gap: var(--s-3);
+}
+
+.grafico__titulo {
+  font-family: var(--fuente-titulos);
+  font-size: var(--fs-500);
+  font-weight: 600;
+  line-height: var(--interlineado-titulo);
+  color: var(--color-texto);
+}
+
+.barras {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--s-2) var(--s-3);
+}
+
+/* Reemplaza .barra de resultados.css: dos filas para no cortar etiquetas largas en móvil */
+.barra,
+li.barra {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--s-1) var(--s-3);
+  align-items: center;
+  font-size: var(--fs-300);
+}
+
+.barra__etiqueta {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--s-1) var(--s-2);
+  color: var(--color-texto);
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+li.barra:has(> .barra__detalle) .barra__etiqueta {
+  grid-column: 1;
+}
+
+li.barra > .barra__detalle {
+  grid-column: 2;
+  justify-self: end;
+}
+
+.barra__detalle {
+  color: var(--color-suave);
+  font-size: var(--fs-300);
+  font-weight: 400;
+}
+
+.barra__pista {
+  grid-column: 1;
+  height: 8px;
+  border-radius: var(--radio-pildora);
+  background: var(--borde);
+  overflow: hidden;
+}
+
+.barra__relleno {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--ambar);
+  transition: width var(--t-medio) var(--curva);
+}
+
+.barras--instagram .barra__relleno {
+  background: var(--frio);
+}
+
+.barras--tiktok .barra__relleno {
+  background: var(--coral);
+}
+
+.barra__valor {
+  grid-column: 2;
+  min-width: 3.6rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-texto);
+  white-space: nowrap;
+}
+
+.grafico__nota {
+  margin: 0;
+  font-size: var(--fs-300);
+  color: var(--color-suave);
+}
+
+/* Cifras destacadas */
+
+.destacados {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+  gap: var(--s-4);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.destacado {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  padding-left: var(--s-3);
+  border-left: 2px solid var(--ambar);
+}
+
+.destacado__valor {
+  font-family: var(--fuente-titulos);
+  font-size: var(--fs-600);
+  font-weight: 600;
+  line-height: var(--interlineado-titulo);
+  color: var(--color-texto);
+  font-variant-numeric: tabular-nums;
+}
+
+.destacado__rotulo {
+  font-size: var(--fs-300);
+  color: var(--color-suave);
+}
+
+/* Secciones de la encuesta y relaciones */
+
+.seccion-datos {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-m);
+  padding: var(--s-4) var(--s-5);
+  display: grid;
+  gap: var(--s-3);
+  scroll-margin-top: var(--altura-cabecera);
+}
+
+.seccion-datos > h2 {
+  margin: 0;
+  font-size: var(--fs-600);
+}
+
+.seccion-datos > p {
+  max-width: 72ch;
+}
+
+.seccion-datos__objetivo {
+  margin: 0;
+  font-size: var(--fs-300);
+  color: var(--color-suave);
+}
+
+.relacion {
+  margin: 0;
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--borde);
+  font-size: var(--fs-300);
+  color: var(--color-suave);
+}
+
+.relacion a {
+  color: var(--enlace);
+}
+
+/* Síntesis, columnas, tablas y citas */
+
+ol.esencial {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  counter-reset: esencial;
+}
+
+ol.esencial > li {
+  display: grid;
+  grid-template-columns: 2.6rem minmax(0, 1fr);
+  gap: var(--s-3);
+  align-items: baseline;
+  counter-increment: esencial;
+  padding-block: var(--s-3);
+  font-size: var(--fs-400);
+  line-height: 1.5;
+}
+
+ol.esencial > li + li {
+  border-top: 1px solid var(--borde);
+}
+
+ol.esencial > li::before {
+  content: counter(esencial, decimal-leading-zero);
+  font-family: var(--fuente-titulos);
+  font-size: var(--fs-500);
+  line-height: 1;
+  color: var(--ambar);
+}
+
+.columnas-dos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-5);
+  align-items: start;
+}
+
+@media (min-width: 760px) {
+  .columnas-dos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.grupo-integracion {
+  display: grid;
+  gap: var(--s-4);
+}
+
+.grupo-integracion > h3 {
+  margin: 0;
+  font-size: var(--fs-500);
+}
+
+table.tabla-plataformas {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: var(--fs-300);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (min-width: 640px) {
+  table.tabla-plataformas {
+    display: table;
+  }
+}
+
+table.tabla-plataformas caption {
+  caption-side: top;
+  text-align: left;
+  color: var(--color-suave);
+  margin-bottom: var(--s-2);
+}
+
+table.tabla-plataformas th,
+table.tabla-plataformas td {
+  padding: var(--s-2) var(--s-3);
+  border-bottom: 1px solid var(--borde);
+  text-align: left;
+}
+
+table.tabla-plataformas th {
+  color: var(--color-suave);
+  font-weight: 600;
+}
+
+table.tabla-plataformas th:not(:first-child),
+table.tabla-plataformas td:not(:first-child) {
+  text-align: right;
+  white-space: nowrap;
+}
+
+blockquote.cita,
+.panel__cita {
+  margin: 0;
+  padding: var(--s-3) var(--s-4);
+  border-left: 3px solid var(--coral);
+  background: var(--fondo);
+  border-radius: 0 var(--radio-s) var(--radio-s) 0;
+  font-family: var(--fuente-titulos);
+  font-style: italic;
+  color: var(--color-texto);
+}
+
+/* Cartografía y panel de tema */
+
+.nodo__punto {
+  width: var(--tam, 18px);
+  height: var(--tam, 18px);
+  transition: width var(--t-medio) var(--curva), height var(--t-medio) var(--curva), transform var(--t-rapido) var(--curva), background-color var(--t-rapido) var(--curva), border-color var(--t-rapido) var(--curva);
+}
+
+.panel__nombre {
+  margin-top: var(--s-1);
+  font-size: var(--fs-300);
+  color: var(--color-suave);
+}
+
+.panel__diferencia,
+.panel__encuesta,
+.panel__hipotesis,
+.panel__cita {
+  margin-top: var(--s-4);
+}
+
+.panel__diferencia {
+  font-size: var(--fs-300);
+  color: var(--color-texto);
+}
+
+.panel__encuesta,
+.panel__hipotesis {
+  font-size: var(--fs-300);
+  color: var(--color-suave);
+}
+
+.panel__encuesta a {
+  color: var(--enlace);
+}
+
+.panel__ficha {
+  margin-top: var(--s-5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .barra__relleno,
+  .nodo__punto {
+    transition: none;
+  }
+}

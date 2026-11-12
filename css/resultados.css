@@ -1,0 +1,413 @@
+/* Cartografía del cuerpo (página «Lo que circula en los videos») · "Afectos en circulación"
+
+   El cuerpo es la escena: ocupa todo el ancho de la página, sin caja ni borde, y los nodos viven sobre él.
+   - Pantallas grandes (≥ 1200 × 780 px): una sola vista. Texto de entrada a la izquierda, controles abajo a la
+     izquierda y, al elegir un punto, el cuerpo se corre a un lado y la ficha aparece a la derecha.
+   - Pantallas pequeñas: todo se apila (texto, controles, cuerpo y ficha debajo). */
+
+.escena {
+  --alto-escena: max(34rem, calc(100svh - var(--altura-cabecera)));
+  --ancho-panel: min(30rem, 34vw);
+  position: relative;
+  padding-bottom: var(--s-6);
+}
+
+/* --- Texto de entrada y controles (apilados) --- */
+
+.escena__intro,
+.escena__controles {
+  width: min(100%, 60rem);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.escena__intro {
+  padding-top: var(--s-6);
+}
+
+.escena__intro h1 {
+  max-width: 18ch;
+  font-size: var(--fs-700);
+}
+
+.escena__intro .portada-cuerpo__lead {
+  max-width: 46ch;
+  margin-top: var(--s-3);
+  font-size: var(--fs-400);
+  color: var(--color-suave);
+}
+
+.escena__intro .subnav {
+  margin-top: var(--s-4);
+}
+
+.escena__controles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3) var(--s-5);
+  margin-top: var(--s-4);
+}
+
+.escena__controles [role="group"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.escena__controles [role="group"]::before {
+  content: attr(aria-label);
+  min-width: 5.2rem;
+  font-size: var(--fs-300);
+  color: var(--color-suave);
+}
+
+.cartografia__leyenda,
+.escena__nota {
+  flex-basis: 100%;
+  max-width: 44ch;
+  margin: 0;
+  font-size: var(--fs-300);
+  color: var(--color-suave);
+}
+
+.escena__nota {
+  font-style: italic;
+}
+
+/* --- Escena: el cuerpo --- */
+
+.escena__marco {
+  position: relative;
+  margin-top: var(--s-4);
+}
+
+.escenario {
+  position: relative;
+  width: 100%;
+  height: min(125vw, 85svh);
+  container-type: size;
+  overflow: clip;
+}
+
+.escenario__mundo {
+  position: absolute;
+  inset: 0;
+  transition: transform 600ms var(--curva);
+}
+
+.escenario__lienzo {
+  position: absolute;
+  inset: 0;
+}
+
+.escenario__campo,
+.escenario__flujo {
+  position: absolute;
+  inset: 0;
+}
+
+.escenario__flujo {
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Marco de los nodos: mismas proporciones (4:5) que la silueta, centrado en la escena */
+.escenario__nodos {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  height: 100cqh;
+  width: 80cqh;
+  left: calc(50cqw - 40cqh);
+}
+
+.nodo {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.nodo__punto {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--color-texto);
+  border-radius: var(--radio-pildora);
+  background: var(--fondo);
+  transition: transform var(--t-rapido) var(--curva), background-color var(--t-rapido) var(--curva), border-color var(--t-rapido) var(--curva);
+}
+
+.nodo:hover .nodo__punto,
+.nodo:focus-visible .nodo__punto {
+  transform: scale(1.2);
+}
+
+.nodo__etiqueta {
+  position: absolute;
+  left: 100%;
+  margin-left: var(--s-1);
+  white-space: nowrap;
+  font-size: var(--fs-300);
+  color: var(--color-texto);
+  background: var(--fondo);
+  padding: 0.1em 0.5em;
+  border-radius: var(--radio-pildora);
+}
+
+.nodo[aria-pressed="true"] .nodo__punto {
+  background: var(--ambar);
+  border-color: var(--ambar);
+  transform: scale(1.3);
+}
+
+.nodo[data-apagado="true"] {
+  opacity: 0.35;
+}
+
+/* --- Ficha del tema --- */
+
+.panel {
+  width: min(calc(100% - 2 * var(--gutter)), 44rem);
+  margin: var(--s-4) auto 0;
+  padding: 0 var(--s-5) var(--s-5);
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-m);
+  scroll-margin-top: var(--altura-cabecera);
+}
+
+.escena:not([data-abierto]) .panel {
+  display: none;
+}
+
+.panel__barra {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: flex-end;
+  padding-block: var(--s-3) var(--s-2);
+  background: var(--superficie);
+}
+
+.panel__titulo {
+  font-size: var(--fs-600);
+}
+
+.panel__encontramos {
+  margin-top: var(--s-3);
+  font-size: var(--fs-400);
+}
+
+.panel__significa,
+.panel__limites {
+  margin-top: var(--s-3);
+  color: var(--color-suave);
+}
+
+.panel__limites {
+  border-left: 3px solid var(--borde);
+  padding-left: var(--s-3);
+}
+
+.panel__descarga {
+  margin-top: var(--s-4);
+}
+
+.panel__grafico {
+  margin-top: var(--s-4);
+  display: grid;
+  gap: var(--s-3);
+}
+
+.barra {
+  display: grid;
+  grid-template-columns: minmax(6rem, 9rem) 1fr 3.2rem;
+  gap: var(--s-3);
+  align-items: center;
+  font-size: var(--fs-300);
+}
+
+.barra__pista {
+  height: 10px;
+  border-radius: var(--radio-pildora);
+  background: var(--borde);
+  overflow: hidden;
+}
+
+.barra__relleno {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--ambar);
+}
+
+.barra__valor {
+  text-align: right;
+}
+
+/* --- Vista de lista (equivalente accesible de la cartografía) --- */
+
+.vista-lista {
+  margin-top: var(--s-5);
+}
+
+.vista-lista ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-4);
+}
+
+@media (min-width: 760px) {
+  .vista-lista ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.vista-lista li {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-m);
+  padding: var(--s-4) var(--s-5);
+}
+
+.vista-lista h3 { font-size: var(--fs-500); }
+.vista-lista p { margin-top: var(--s-2); color: var(--color-suave); }
+.vista-lista a { display: inline-block; margin-top: var(--s-3); color: var(--enlace); }
+
+.vista-lista[hidden],
+.escena__marco[hidden],
+.panel__contenido[hidden] {
+  display: none;
+}
+
+.bloque .boton {
+  margin-top: var(--s-4);
+}
+
+.boton[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* --- Pantallas grandes: una sola vista, el cuerpo en el centro --- */
+
+@media (min-width: 1200px) and (min-height: 780px) {
+  .escena:not([data-vista="lista"]) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    height: var(--alto-escena);
+    padding-bottom: 0;
+    overflow: clip;
+  }
+
+  .escena:not([data-vista="lista"]) > * {
+    grid-area: 1 / 1;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .escena:not([data-vista="lista"]) .escena__marco {
+    margin: 0;
+    height: 100%;
+  }
+
+  .escena:not([data-vista="lista"]) .escenario {
+    position: absolute;
+    inset: 0;
+    width: auto;
+    height: auto;
+  }
+
+  /* Un lienzo más ancho que la escena: al correrse el cuerpo no queda un borde sin puntos */
+  .escena:not([data-vista="lista"]) .escenario__lienzo {
+    left: -22cqw;
+    right: -22cqw;
+  }
+
+  /* Al elegir un punto el cuerpo se corre a la izquierda lo justo para dejar sitio a la ficha */
+  .escena[data-abierto]:not([data-vista="lista"]) {
+    --ancho-cuerpo: calc(0.8 * var(--alto-escena));
+    --desplaza: max(0px, calc(var(--ancho-cuerpo) / 2 + var(--s-5) + var(--gutter) + var(--ancho-panel) - 50vw));
+  }
+
+  .escena:not([data-vista="lista"]) .escenario__mundo {
+    transform: translateX(calc(-1 * var(--desplaza, 0px)));
+  }
+
+  .escena:not([data-vista="lista"]) .escena__intro {
+    z-index: 2;
+    align-self: start;
+    justify-self: start;
+    width: clamp(12rem, calc(50vw - var(--desplaza, 0px) - 0.29 * var(--alto-escena) - var(--gutter) - var(--s-5)), 24rem);
+    margin: var(--s-6) 0 0 var(--gutter);
+    padding: 0;
+  }
+
+  .escena[data-abierto]:not([data-vista="lista"]) .escena__intro .portada-cuerpo__lead {
+    display: none;
+  }
+
+  .escena:not([data-vista="lista"]) .escena__controles {
+    z-index: 2;
+    align-self: end;
+    justify-self: start;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: var(--s-2);
+    width: min(26rem, 100%);
+    margin: 0 0 4rem var(--gutter);
+    padding: 0;
+  }
+
+  .escena:not([data-vista="lista"]) .escena__controles [role="group"] {
+    flex-wrap: nowrap;
+  }
+
+  .escena:not([data-vista="lista"]) .cartografia__leyenda {
+    margin-top: var(--s-2);
+  }
+
+  .escena:not([data-vista="lista"]) .panel {
+    position: absolute;
+    z-index: 3;
+    top: var(--s-5);
+    right: var(--gutter);
+    width: var(--ancho-panel);
+    max-height: calc(100% - 2 * var(--s-5));
+    margin: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    transition: opacity 320ms var(--curva), transform 520ms var(--curva), visibility 0s linear 0s;
+  }
+
+  .escena:not([data-abierto]):not([data-vista="lista"]) .panel {
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(2.5rem);
+    pointer-events: none;
+    transition: opacity 240ms var(--curva), transform 240ms var(--curva), visibility 0s linear 240ms;
+  }
+}
+
+/* Con «reducir movimiento» las transiciones ya se anulan en base.css; el cuerpo se corre igual, pero de golpe */
+@media (prefers-reduced-motion: reduce) {
+  .nodo__punto,
+  .nodo:hover .nodo__punto,
+  .nodo:focus-visible .nodo__punto,
+  .nodo[aria-pressed="true"] .nodo__punto {
+    transition: none;
+    transform: none;
+  }
+}
