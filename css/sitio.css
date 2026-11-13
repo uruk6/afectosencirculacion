@@ -120,16 +120,25 @@
 
 .pie__lista,
 .pie__enlaces {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--s-2) var(--s-5);
   list-style: none;
   padding: 0;
 }
 
+/* Tres columnas iguales que se apilan en pantallas angostas */
 .pie__lista {
-  margin-bottom: var(--s-4);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: var(--s-3) var(--s-6);
+  margin-bottom: var(--s-5);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--borde);
   color: var(--color-suave);
+}
+
+.pie__enlaces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-5);
 }
 
 .pie a {
