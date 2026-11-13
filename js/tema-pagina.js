@@ -242,7 +242,7 @@
       tema.citas.forEach((cita) => {
         const bloque = el('blockquote', 'cita');
         bloque.appendChild(el('p', '', cita.texto));
-        bloque.appendChild(el('footer', '', cita.plataforma));
+        bloque.appendChild(el('footer', '', cita.plataforma || 'Fragmento de la transcripción de un video'));
         cajaCitas.appendChild(bloque);
       });
       pila.appendChild(cajaCitas);

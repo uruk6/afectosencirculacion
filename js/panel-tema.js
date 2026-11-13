@@ -76,6 +76,7 @@
     if (tema.diferencia) lista.push({ clave: 'diferencia', etiqueta: 'Instagram y TikTok' });
     if (tema.encuesta) lista.push({ clave: 'encuesta', etiqueta: 'Y en la encuesta' });
     lista.push({ clave: 'significa', etiqueta: 'Cómo lo leemos' });
+    if (Array.isArray(tema.citas) && tema.citas.length) lista.push({ clave: 'citas', etiqueta: 'En sus palabras' });
     if (tema.hipotesis) lista.push({ clave: 'hipotesis', etiqueta: 'Una idea por probar' });
     if (tema.extra) lista.push({ clave: 'extra', etiqueta: tema.extra.etiqueta || 'Un hallazgo extra' });
     lista.push({ clave: 'limites', etiqueta: 'Qué no podemos decir' });
@@ -155,6 +156,16 @@
           texto.append(' ', enlace);
         }
         raiz.appendChild(p);
+        break;
+      }
+      case 'citas': {
+        raiz.appendChild(crear('p', 'panel__encontramos', 'Fragmentos de lo que se dice en los videos, tomados de sus transcripciones. No mostramos nombres de cuentas ni imágenes.'));
+        tema.citas.forEach((cita) => {
+          const bloque = crear('blockquote', 'panel__cita cita');
+          bloque.appendChild(crear('p', '', `«${cita.texto}»`));
+          bloque.appendChild(crear('footer', '', cita.plataforma || 'Fragmento de la transcripción de un video'));
+          raiz.appendChild(bloque);
+        });
         break;
       }
       case 'significa':

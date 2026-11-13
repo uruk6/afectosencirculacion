@@ -2,17 +2,17 @@
 // Fuente: informes 01 a 07 de "Análisis resultados" (codificación cerrada el 08/11/2026).
 // Textos reescritos el 13/11/2026 en lenguaje claro para quien llega sin conocer la investigación:
 // cada tema trae `queEs` (qué estudia) y `terminos` (palabras del estudio explicadas). Las cifras no cambiaron.
-// NO enviar a Antigravity. Sin identificadores de video, sin nombres de codificadores y sin citas literales sin verificar.
+// NO enviar a Antigravity. Sin identificadores de video ni nombres de codificadores. `citas`: fragmentos de TRANSCRIPCIONES de videos tomados del Administrador de citas de ATLAS.ti (13/11/2026), sin nombres ni cuentas; los videos no se citan más allá de esto.
 
 window.BASE_VIDEOS = { total: 160, tiktok: 73, instagram: 87 };
 
 window.TEMAS = [
   {
-    id: 'ojos',
+    id: 'manos',
     slug: 'economias-afectivas',
-    region: 'Ojos',
-    x: 78,
-    y: 8,
+    region: 'Manos',
+    x: 81.5,
+    y: 64.4,
     nombre: 'Economías afectivas',
     pregunta: '¿Para quién mostramos el afecto?',
     queEs: 'Las «economías afectivas» describen cómo las emociones —el amor, el dolor— circulan por las redes y ganan valor cuando otras personas las ven, las comentan o las comparten. Aquí miramos los videos en los que el afecto parece mostrarse para ser mirado.',
@@ -39,7 +39,10 @@ window.TEMAS = [
       enlaceTexto: 'Ver cómo se perciben las plataformas'
     },
     extra: null,
-    citas: []
+    citas: [
+      { texto: 'Creo que lo que más me duele es lo que rompió en mí porque… Un minuto. Se va a arruinar el make up, chicas, no me lo he sellado.' },
+      { texto: 'Pero bueno, es un pensamiento de una chica traicionada, pero superguapa, supericónica, que neta no se va a dejar caer por esta situación. Así quedó el outfit, así quedó el make-up y te agradezco mucho que te hayas quedado a escucharme.' }
+    ]
   },
   {
     id: 'rostro',
@@ -73,7 +76,9 @@ window.TEMAS = [
       enlaceTexto: 'Ver qué presión decimos sentir'
     },
     extra: null,
-    citas: []
+    citas: [
+      { texto: 'Así que viajé hasta México para hablar y cerrar este capítulo con amor y respeto…' }
+    ]
   },
   {
     id: 'pecho',
@@ -108,7 +113,10 @@ window.TEMAS = [
       enlaceTexto: 'Ver cómo nos sentimos después'
     },
     extra: null,
-    citas: []
+    citas: [
+      { texto: 'Aprendizajes: primero, no dejes pasar las oportunidades. Y segundo, elige bien a una pareja que te apoye en tus proyectos y en tus sueños.' },
+      { texto: 'Los sueños en pareja, los sueños por dos son mucho más importantes que hacerlo uno por separado y es mucho más gratificante.' }
+    ]
   },
   {
     id: 'pulso',
@@ -148,7 +156,10 @@ window.TEMAS = [
       texto: 'El humor no estaba previsto: apareció al marcar los videos. Es casi la mitad del formato prestado (41 de 88 videos, 47 %). En la encuesta pasa algo parecido: el humor, las bromas y los retos son el segundo contenido más visto (40,4 %, después de las historias personales, con 44,9 %) y el entretenimiento es el motivo principal (71,3 %). Casi todo el humor de Instagram está en un solo grupo de videos, así que no podemos separar el efecto del humor del efecto de quién los marcó.',
       limites: 'Que el humor sea tan frecuente dentro del formato prestado se debe en parte a una regla de nuestro libro de códigos: un sketch cómico se cuenta como formato prestado. El cruce muestra cuánto del formato prestado es humor; no prueba que el humor cause la imitación. El humor se estudió con las notas de quienes marcaron, sin crear un código nuevo.'
     },
-    citas: []
+    citas: [
+      { texto: 'Cuando estamos viendo tik tok y le sale una mina 😡' },
+      { texto: '…para que el video valga la pena, vayan al link de la bio.' }
+    ]
   },
   {
     id: 'voz',
@@ -186,7 +197,10 @@ window.TEMAS = [
       enlaceTexto: 'Ver cuidar o vigilar'
     },
     extra: null,
-    citas: []
+    citas: [
+      { texto: 'Muñeca, ¿pero ese hombre es tu novio o es tu hater?' },
+      { texto: 'Quédate con el que no le dé pena ser cariñoso en público.' }
+    ]
   }
 ];
 
@@ -199,9 +213,9 @@ window.PARES = [
   { a: 'rostro', b: 'pecho', videos: 35 },
   { a: 'pulso', b: 'voz', videos: 30 },
   { a: 'pecho', b: 'voz', videos: 27 },
-  { a: 'ojos', b: 'pulso', videos: 22 },
+  { a: 'manos', b: 'pulso', videos: 22 },
   { a: 'rostro', b: 'voz', videos: 21 },
-  { a: 'ojos', b: 'rostro', videos: 20 },
-  { a: 'ojos', b: 'voz', videos: 16 },
-  { a: 'ojos', b: 'pecho', videos: 12 }
+  { a: 'manos', b: 'rostro', videos: 20 },
+  { a: 'manos', b: 'voz', videos: 16 },
+  { a: 'manos', b: 'pecho', videos: 12 }
 ];
