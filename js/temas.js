@@ -146,7 +146,7 @@ window.TEMAS = [
       texto: 'El formato prestado parece más frecuente en Instagram (66 % de sus videos frente a 42 % en TikTok), pero buena parte de esa diferencia viene de un grupo de videos de humor de pareja y de quién marcó cada video: sin ese grupo, la cifra baja a 55 % frente a 42 %. Con estos datos no se ve que TikTok imite más que Instagram.'
     },
     encuesta: {
-      texto: 'En la encuesta, en promedio las personas están de acuerdo con que lo que ven de parejas lo selecciona un algoritmo (3,76 de 5). Cerca de ocho de cada diez ha intentado alguna vez «limpiar» o cambiar su algoritmo, y alrededor del 17 % lo hace con frecuencia.',
+      texto: 'En la encuesta, en promedio las personas están de acuerdo con que lo que ven de parejas lo selecciona un algoritmo (3,76 de 5). Tres de cada cuatro (76,5 %) han intentado alguna vez «limpiar» o cambiar su algoritmo, y alrededor del 17 % lo hace con frecuencia.',
       enlace: 'cuantitativos.html#algoritmo',
       enlaceTexto: 'Ver qué hacemos con el algoritmo'
     },

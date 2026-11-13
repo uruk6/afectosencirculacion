@@ -1,7 +1,7 @@
 // DATOS REALES AGREGADOS de la encuesta (Resultados · bloque cuantitativo, N = 136).
 // Fuente: informe del Objetivo 1 y Reporte_EcAfectivas_v2_N136 (texto de los ítems tomado del instrumento).
 // NO enviar a Antigravity. Se copia a prototipo/js/encuesta.js después de que Gemini construya con datos de ejemplo.
-// Los campos `pendiente` son notas internas: no se muestran y se quitan antes de publicar.
+// Los campos `pendiente` son notas internas: no se muestran.
 // unidad: '%' (porcentaje sobre las 136 personas) | 'menciones' (selección múltiple: conteos más `base`; el gráfico los muestra como % de la base, con el conteo al lado) | 'media' (escala de 1 a 5).
 
 window.ENCUESTA = {
@@ -92,7 +92,7 @@ window.ENCUESTA = {
       id: 'algoritmo',
       pregunta: '¿Qué haces con el algoritmo?',
       objetivo: 'Objetivo 1 · se relaciona con el 2',
-      texto: 'Cerca de ocho de cada diez estudiantes ha intentado alguna vez modificar su algoritmo, y alrededor del 17 % lo hace con frecuencia: hay una sensación de agencia sobre lo que se recomienda. Guardar contenido es poco común, pero una de cada cuatro personas siente ansiedad si pasa un día sin revisar sus redes.',
+      texto: 'Tres de cada cuatro estudiantes (76,5 %, 104 de 136) han intentado alguna vez modificar su algoritmo, y alrededor del 17 % lo hace con frecuencia: hay una sensación de agencia sobre lo que se recomienda. Guardar contenido es poco común, pero una de cada cuatro personas siente ansiedad si pasa un día sin revisar sus redes.',
       destacados: [],
       graficos: [
         {
@@ -128,8 +128,7 @@ window.ENCUESTA = {
         }
       ],
       significa: 'La intensidad del vínculo con las plataformas no se explica solo por el tiempo que se les dedica.',
-      limite: 'Las dos primeras barras son las categorías «alguna vez» y «con frecuencia»; su suma es cercana a ocho de cada diez.',
-      pendiente: 'q13: el informe dice 77,9 % «al menos una vez» (59,6 + 16,9 = 76,5). Verificar el conteo real en la hoja de respuestas. Mientras tanto no se publica el 77,9 %.',
+      limite: 'Las dos primeras barras son las categorías «alguna vez» y «con frecuencia»; juntas suman 76,5 % (104 de 136); el 23,5 % nunca lo ha intentado.',
       relacion: {
         texto: 'En los videos, siete de cada diez llevan alguna marca de la plataforma. En sus propias redes, en cambio, los estudiantes casi no usan etiquetas ni imitan tendencias de pareja (1,33 de 5).',
         enlace: 'tema.html?tema=pulso',
