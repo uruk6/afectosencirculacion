@@ -111,7 +111,20 @@
   }
 
   function renderizarTema(contenedorPortada, contenedor, tema, temas, base) {
-    document.title = `${tema.pregunta} · Afectos en circulación · Prototipo`;
+    document.title = `${tema.pregunta} · Afectos en circulación`;
+
+    // Metadatos propios de cada tema (para buscadores y para compartir)
+    const direccion = `https://afectosencirculacion.org/tema.html?tema=${encodeURIComponent(tema.id)}`;
+    const resumen = tema.queEs || tema.encontramos || '';
+    const poner = (selector, atributo, valor) => {
+      const nodo = document.querySelector(selector);
+      if (nodo) nodo.setAttribute(atributo, valor);
+    };
+    poner('link[rel="canonical"]', 'href', direccion);
+    poner('meta[name="description"]', 'content', resumen);
+    poner('meta[property="og:title"]', 'content', `${tema.pregunta} · Afectos en circulación`);
+    poner('meta[property="og:description"]', 'content', resumen);
+    poner('meta[property="og:url"]', 'content', direccion);
 
     contenedorPortada.textContent = '';
     contenedorPortada.appendChild(crearMigas(tema.nombre));
@@ -125,6 +138,22 @@
     );
 
     const pila = el('div', 'pila');
+
+    // Qué es este tema, en palabras sencillas
+    if (tema.queEs) {
+      const cajaQue = el('section', 'caja');
+      cajaQue.appendChild(el('h2', '', '¿De qué trata?'));
+      cajaQue.appendChild(el('p', '', tema.queEs));
+      if (Array.isArray(tema.terminos) && tema.terminos.length) {
+        const lista = el('dl', 'panel__terminos');
+        tema.terminos.forEach((x) => {
+          lista.appendChild(el('dt', '', x.termino));
+          lista.appendChild(el('dd', '', x.definicion));
+        });
+        cajaQue.appendChild(lista);
+      }
+      pila.appendChild(cajaQue);
+    }
 
     // Lo que encontramos, gráfico de formas, tabla por plataforma y diferencia
     const cajaHallazgos = el('section', 'caja');

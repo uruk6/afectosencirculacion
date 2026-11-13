@@ -83,7 +83,7 @@ window.ENCUESTA = {
       significa: 'El contenido de pareja se ve más como entretenimiento que como una búsqueda consciente de orientación para las relaciones.',
       limite: 'Son respuestas de 136 estudiantes que participaron voluntariamente: no representan a todos los estudiantes.',
       relacion: {
-        texto: 'En los videos pasa algo parecido: casi la mitad del formato prestado (tendencias, plantillas, bailes) es humor.',
+        texto: 'En los videos pasa algo parecido: casi la mitad de las plantillas que otras personas ya usaron (tendencias, bailes, frases de moda) es humor.',
         enlace: 'tema.html?tema=pulso',
         enlaceTexto: 'Ver el tema Lógicas de plataforma'
       }

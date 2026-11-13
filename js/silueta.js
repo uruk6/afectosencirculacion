@@ -5,6 +5,8 @@
   const SEMILLA_RETICULA = 0x2026c0de;
   const RADIO_FOCO = 110;
   const RADIO_FOCO_CUAD = RADIO_FOCO * RADIO_FOCO;
+  // De la cabeza (calor) a las piernas (frío): un degradado vertical que hace legible el cuerpo.
+  const ORDEN_COLORES = ['amarillo', 'naranja', 'magenta', 'violeta', 'azul'];
 
   function mulberry32(semilla) {
     let a = semilla >>> 0;
@@ -34,12 +36,17 @@
       this.ancho = 0;
       this.alto = 0;
       this.dpr = 1;
+      // Retícula de fondo
       this.total = 0;
       this.px = new Float32Array(0);
       this.py = new Float32Array(0);
-      this.altura = new Float32Array(0);
-      this.azar = new Float32Array(0);
       this.dentro = new Uint8Array(0);
+      // Puntos del cuerpo (retícula más fina, solo dentro de la silueta)
+      this.totalCuerpo = 0;
+      this.cx = new Float32Array(0);
+      this.cy = new Float32Array(0);
+      this.cAzar = new Float32Array(0);
+      this.cColor = new Uint8Array(0);
       this.silueta = null;
       this.colores = {};
       this.leerColores();
@@ -123,6 +130,16 @@
         const my = y0 + 0.66 * sh;
         path.moveTo(mx + rMano, my);
         path.arc(mx, my, rMano, 0, DOS_PI);
+
+        // Piernas: el cuerpo llena la altura de la escena
+        agregarCapsula(
+          path,
+          cx + s * 0.075 * sh,
+          y0 + 0.76 * sh,
+          cx + s * 0.085 * sh,
+          y0 + 0.955 * sh,
+          0.058 * sh
+        );
       }
 
       return path;
@@ -132,6 +149,16 @@
       if (modo !== 'ambas' && modo !== 'instagram' && modo !== 'tiktok') return;
       this.modo = modo;
       this.generarPuntos();
+    }
+
+    // Índice de color (0 = cabeza, 4 = piernas) según la altura; un poco de azar suaviza los bordes entre franjas.
+    indiceColor(h, azar) {
+      if (this.modo === 'instagram') return azar < 0.5 ? 3 : 4;
+      if (this.modo === 'tiktok') return azar < 0.34 ? 0 : (azar < 0.67 ? 1 : 2);
+      let i = h < 0.16 ? 0 : (h < 0.34 ? 1 : (h < 0.56 ? 2 : (h < 0.78 ? 3 : 4)));
+      if (azar < 0.12 && i > 0) i -= 1;
+      else if (azar > 0.9 && i < 4) i += 1;
+      return i;
     }
 
     generarPuntos() {
@@ -148,8 +175,6 @@
       if (this.total !== total) {
         this.px = new Float32Array(total);
         this.py = new Float32Array(total);
-        this.altura = new Float32Array(total);
-        this.azar = new Float32Array(total);
         this.dentro = new Uint8Array(total);
         this.total = total;
       }
@@ -171,88 +196,148 @@
           const y = yBase + (aleatorio() * 2 - 1) * desorden;
           this.px[i] = x;
           this.py[i] = y;
-          this.azar[i] = aleatorio();
-          this.altura[i] = Math.max(0, Math.min(1, (y - y0) / sh));
+          aleatorio();
           this.dentro[i] = this.ctx.isPointInPath(this.silueta, x, y) ? 1 : 0;
           i++;
         }
       }
+
+      // Cuerpo: retícula más fina (≈ 60 % del paso) para que la figura se lea con claridad
+      const pasoC = paso * 0.6;
+      const cxc = this.ancho * 0.5;
+      const x0c = cxc - 0.34 * sh;
+      const x1c = cxc + 0.34 * sh;
+      const y0c = y0 + 0.02 * sh;
+      const y1c = y0 + 1.0 * sh;
+      const colsC = Math.max(1, Math.floor((x1c - x0c) / pasoC));
+      const filasC = Math.max(1, Math.floor((y1c - y0c) / pasoC));
+      const maxC = colsC * filasC;
+      const cx = new Float32Array(maxC);
+      const cy = new Float32Array(maxC);
+      const caz = new Float32Array(maxC);
+      const ccol = new Uint8Array(maxC);
+      const alC = mulberry32(SEMILLA_RETICULA ^ 0x5a5a);
+      const desC = this.modo === 'instagram' ? 0 : 0.28 * pasoC;
+      let n = 0;
+      for (let f = 0; f < filasC; f++) {
+        for (let c = 0; c < colsC; c++) {
+          const x = x0c + c * pasoC + (alC() * 2 - 1) * desC;
+          const y = y0c + f * pasoC + (alC() * 2 - 1) * desC;
+          const azar = alC();
+          if (!this.ctx.isPointInPath(this.silueta, x, y)) continue;
+          const h = Math.max(0, Math.min(1, (y - y0) / sh));
+          cx[n] = x;
+          cy[n] = y;
+          caz[n] = azar;
+          ccol[n] = this.indiceColor(h, azar);
+          n++;
+        }
+      }
+      this.cx = cx.subarray(0, n);
+      this.cy = cy.subarray(0, n);
+      this.cAzar = caz.subarray(0, n);
+      this.cColor = ccol.subarray(0, n);
+      this.totalCuerpo = n;
+
       this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
     }
 
-    colorPunto(h, azar) {
-      if (this.modo === 'instagram') {
-        return h < 0.5 ? this.colores.azul : this.colores.violeta;
-      }
-      if (this.modo === 'tiktok') {
-        if (azar < 0.25) return this.colores.rojo;
-        if (azar < 0.5) return this.colores.naranja;
-        if (azar < 0.75) return this.colores.magenta;
-        return this.colores.amarillo;
-      }
-      if (azar < 0.12) return this.colores.naranja;
-      if (h < 0.45) return this.colores.azul;
-      if (h <= 0.75) return this.colores.violeta;
-      return this.colores.violeta;
-    }
-
+    // estado: { foco, fuerza, tiempo, camara: { s, fx, fy, tx, ty } }
+    // La cámara acerca la escena: un punto P del mundo se ve en (P − F)·s + T.
     dibujar(estado) {
       const foco = estado && estado.foco ? estado.foco : null;
       const fuerza = estado && estado.fuerza > 0 ? estado.fuerza : 0;
       const tiempo = estado && estado.tiempo != null ? estado.tiempo : 0;
+      const cam = estado && estado.camara ? estado.camara : null;
       const hayFoco = foco !== null && fuerza > 0;
       const fx = hayFoco ? foco.x : 0;
       const fy = hayFoco ? foco.y : 0;
 
       const ctx = this.ctx;
+      const dpr = this.dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, this.ancho, this.alto);
+
+      const s = cam ? cam.s : 1;
+      // Al acercar la cámara los puntos crecen menos que la escena: así se ven más nítidos y no se empastan
+      const comp = 1 / Math.pow(s, 0.55);
+      if (cam) {
+        ctx.setTransform(dpr * s, 0, 0, dpr * s, dpr * (cam.tx - cam.fx * s), dpr * (cam.ty - cam.fy * s));
+      }
+
       const total = this.total;
       const px = this.px;
       const py = this.py;
-      const altura = this.altura;
-      const azar = this.azar;
       const dentro = this.dentro;
       const quieto = this.modo === 'instagram';
 
-      ctx.clearRect(0, 0, this.ancho, this.alto);
-
+      // Retícula de fondo (fuera del cuerpo)
       ctx.globalAlpha = 1;
       ctx.fillStyle = this.colores.punto;
       ctx.beginPath();
       for (let i = 0; i < total; i++) {
         if (!dentro[i]) {
-          ctx.rect(px[i] - 0.7, py[i] - 0.7, 1.4, 1.4);
+          ctx.rect(px[i] - 0.7 * comp, py[i] - 0.7 * comp, 1.4 * comp, 1.4 * comp);
         }
       }
       ctx.fill();
 
-      for (let i = 0; i < total; i++) {
-        if (!dentro[i]) continue;
-        let x = px[i];
-        let y = py[i];
-
-        if (hayFoco) {
-          const dx = fx - x;
-          const dy = fy - y;
-          const d2 = dx * dx + dy * dy;
-          if (d2 < RADIO_FOCO_CUAD) {
-            const d = Math.sqrt(d2);
-            const desp = d > 0.0001 ? (18 * fuerza * (1 - d / RADIO_FOCO)) / d : 0;
-            ctx.fillStyle = this.colores.amarillo;
-            ctx.beginPath();
-            ctx.arc(x + dx * desp, y + dy * desp, 2.4, 0, DOS_PI);
-            ctx.fill();
-            continue;
+      // Puntos del cuerpo, agrupados por color: primero el resplandor y luego el núcleo
+      const nC = this.totalCuerpo;
+      const cxs = this.cx;
+      const cys = this.cy;
+      const caz = this.cAzar;
+      const ccol = this.cColor;
+      const enfocados = [];
+      for (let pasada = 0; pasada < 2; pasada++) {
+        for (let g = 0; g < ORDEN_COLORES.length; g++) {
+          ctx.fillStyle = this.colores[ORDEN_COLORES[g]];
+          ctx.globalAlpha = pasada === 0 ? 0.16 : 1;
+          ctx.beginPath();
+          let abierto = false;
+          for (let i = 0; i < nC; i++) {
+            if (ccol[i] !== g) continue;
+            const x = cxs[i];
+            const y = cys[i];
+            if (hayFoco) {
+              const dx = fx - x;
+              const dy = fy - y;
+              if (dx * dx + dy * dy < RADIO_FOCO_CUAD) {
+                if (pasada === 0 && g === 0) enfocados.push(i);
+                continue;
+              }
+            }
+            const factor = quieto ? 1 : 1 + 0.18 * Math.sin(tiempo * 2 + caz[i] * 6.28);
+            const r = (pasada === 0 ? 5.6 : 2.5) * factor * comp;
+            ctx.moveTo(x + r, y);
+            ctx.arc(x, y, r, 0, DOS_PI);
+            abierto = true;
           }
+          if (abierto) ctx.fill();
+        }
+      }
+      ctx.globalAlpha = 1;
+
+      // Puntos cercanos al foco: se acercan al nodo y se encienden
+      if (hayFoco) {
+        for (let i = 0; i < nC; i++) {
+          const dx = fx - cxs[i];
+          const dy = fy - cys[i];
+          const d2 = dx * dx + dy * dy;
+          if (d2 >= RADIO_FOCO_CUAD) continue;
+          const d = Math.sqrt(d2);
+          const desp = d > 0.0001 ? (18 * fuerza * (1 - d / RADIO_FOCO)) / d : 0;
+          ctx.fillStyle = this.colores.amarillo;
+          ctx.globalAlpha = 0.22;
+          ctx.beginPath();
+          ctx.arc(cxs[i] + dx * desp, cys[i] + dy * desp, 6.4 * comp, 0, DOS_PI);
+          ctx.fill();
+          ctx.globalAlpha = 1;
+          ctx.beginPath();
+          ctx.arc(cxs[i] + dx * desp, cys[i] + dy * desp, 2.9 * comp, 0, DOS_PI);
+          ctx.fill();
         }
 
-        const factor = quieto ? 1 : 1 + 0.15 * Math.sin(tiempo * 2 + azar[i] * 6.28);
-        ctx.fillStyle = this.colorPunto(altura[i], azar[i]);
-        ctx.beginPath();
-        ctx.arc(x, y, 2.2 * factor, 0, DOS_PI);
-        ctx.fill();
-      }
-
-      if (hayFoco) {
         ctx.globalAlpha = 0.6 * fuerza;
         ctx.strokeStyle = this.colores.amarillo;
         ctx.lineWidth = 1.5;

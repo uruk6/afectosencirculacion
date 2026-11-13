@@ -8,11 +8,11 @@ window.CONCLUSIONES = {
     lead: 'Esto es lo que encontramos al preguntarle a 136 estudiantes y al leer 160 videos de pareja con mucha interacción en TikTok e Instagram.',
     esencial: [
       'Los estudiantes que respondieron ven contenido de pareja poco tiempo y, sobre todo, para entretenerse: el 63,9 % le dedica 30 minutos o menos al día.',
-      'En los videos de pareja con más interacción, el afecto se muestra como logro (la pareja que funciona), como escena (lo cotidiano contado como película) y con el formato de la plataforma.',
-      'El dolor también circula, pero producido para ser mirado, y suele cerrarse en superación. Es sobre todo de TikTok.',
-      'Los videos traen un mandato sobre cómo debe ser el amor, casi siempre dirigido a la conducta de la pareja.',
+      'En los videos de pareja con más interacción, el afecto se muestra como un logro (la pareja que funciona), como una escena (lo cotidiano contado como una película) y con plantillas que ya usaron otras personas (bailes, audios virales, frases de moda).',
+      'El dolor también circula en los videos, pero contado con producción (luz, música, textos) para ser mirado, y suele terminar en superación. Es sobre todo de TikTok.',
+      'Muchos videos dicen cómo «debe» ser el amor, casi siempre señalando lo que tiene que hacer la otra persona.',
       'Los estudiantes perciben a Instagram como más exigente y a TikTok como más espontáneo; en los videos, la diferencia entre plataformas es de énfasis, no de naturaleza.',
-      'Casi nadie critica esta economía afectiva desde adentro: lo hace 1 video de 160.'
+      'Casi nadie cuestiona desde adentro esta forma de mostrar el afecto: lo hace 1 video de 160.'
     ],
     puertas: [
       {
@@ -45,12 +45,12 @@ window.CONCLUSIONES = {
     {
       id: 'objetivo-2',
       titulo: '¿Qué narrativas y estéticas dominan en los videos?',
-      texto: 'La pareja exhibida como logro, contada como escena cotidiana, empaquetada con el formato y los hashtags de la plataforma y acompañada de un mandato sobre cómo debe ser el vínculo. El malestar también circula, pero como producción (dolor actuado o expuesto) que tiende a cerrarse en superación. El humor es el vehículo principal del formato prestado.'
+      texto: 'La pareja mostrada como logro, contada como una escena de la vida diaria, envuelta en plantillas y hashtags de la plataforma y acompañada de reglas sobre cómo «debe» ser el vínculo. El malestar también circula, pero producido (contado con luz, música y textos) y tiende a terminar en superación. El humor es el vehículo principal de las plantillas que otras personas ya usaron.'
     },
     {
       id: 'objetivo-3',
       titulo: '¿Qué distingue a Instagram de TikTok?',
-      texto: 'En los videos, el «sujeto ideal» de Instagram es el de la pareja-logro con marca personal y formato de tendencia humorístico; el de TikTok es el de quien expone el dolor y lo convierte en crecimiento, con más relato personal cotidiano. Las diferencias son de énfasis, no de naturaleza, y varias dependen de quién codificó o de un bloque de videos de humor.'
+      texto: 'En los videos, la persona «ideal» de Instagram es la de la pareja que funciona, con marca personal y plantillas de tendencia de humor; la de TikTok es la que muestra su dolor y lo convierte en crecimiento, con más relato cotidiano. Las diferencias son de énfasis, no de naturaleza, y varias dependen de quién marcó los videos o de un grupo de videos de humor.'
     }
   ],
 
@@ -59,11 +59,11 @@ window.CONCLUSIONES = {
     coinciden: [
       {
         titulo: 'El entretenimiento y el humor',
-        texto: 'Los estudiantes ven contenido de pareja sobre todo por entretenimiento (71,3 %) y el humor y los retos son el segundo formato más visto (40,4 %). En los videos, el humor es casi la mitad del formato prestado (41 de 88).'
+        texto: 'Los estudiantes ven contenido de pareja sobre todo por entretenimiento (71,3 %) y el humor y los retos son el segundo formato más visto (40,4 %). En los videos, el humor es casi la mitad de las plantillas imitadas (41 de los 88 videos que usan una plantilla de otras personas).'
       },
       {
         titulo: 'La visibilidad y la validación',
-        texto: 'La exigencia de que las parejas publiquen como señal de la relación puntúa entre lo más alto de su grupo de preguntas (2,82 de 5). En los videos, la validación se pide con presunción o con el reclamo de ser mostrada, casi siempre con formato de tendencia.'
+        texto: 'La exigencia de que las parejas publiquen como señal de la relación puntúa entre lo más alto de su grupo de preguntas (2,82 de 5). En los videos, la validación se pide presumiendo la pareja o reclamando que se la muestre, casi siempre con una plantilla de tendencia.'
       },
       {
         titulo: 'La autenticidad',
@@ -73,7 +73,7 @@ window.CONCLUSIONES = {
     tensiones: [
       {
         titulo: 'Poca presión sentida, mucha presencia en los videos',
-        texto: 'Los estudiantes puntúan bajo en «sujeto productivamente feliz» (1,85 de 5) y en estetización del yo (2,07). Sin embargo, el 40 % de los videos tiene alguna marca de felicidad como rendimiento y el 46 % alguna de estetización del yo. Una hipótesis: estas lógicas se perciben poco porque están naturalizadas en el formato de entretenimiento. Es una hipótesis, no un resultado.'
+        texto: 'Los estudiantes sienten poca presión por mostrarse felices y exitosos (1,85 de 5) o por embellecer lo que publican (2,07). Sin embargo, el 40 % de los videos muestra la felicidad como rendimiento (la pareja como logro, por ejemplo) y el 46 % embellece la vida de pareja. Una hipótesis: estas ideas se perciben poco porque llegan naturalizadas dentro del entretenimiento. Es una hipótesis, no un resultado.'
       },
       {
         titulo: 'Lo que se valora y lo que circula como broma',
@@ -87,29 +87,29 @@ window.CONCLUSIONES = {
       },
       {
         titulo: 'El humor y el género',
-        texto: 'El humor es el vehículo principal del formato prestado. En una lectura de las notas de codificación, el chiste cae más veces sobre la conducta de la mujer (enojo, celos, control) que sobre la del hombre (deseo sexual, infantilización), con burla recíproca y repertorios distintos. Es una hipótesis con pocos casos y no surge de volver a ver los videos con esa pregunta.'
+        texto: 'El humor es el vehículo principal de las plantillas que otras personas ya usaron. En una lectura de las notas de quienes marcaron los videos, el chiste cae más veces sobre la conducta de la mujer (enojo, celos, control) que sobre la del hombre (deseo sexual, infantilización), con burla recíproca y repertorios distintos. Es una hipótesis con pocos casos y no surge de volver a ver los videos con esa pregunta.'
       },
       {
         titulo: 'La resistencia, casi ausente',
-        texto: 'Solo 1 de los 160 videos dirige el malestar contra la comparación y los estándares de las redes. La crítica a esta economía afectiva se publica poco dentro de ella.'
+        texto: 'Solo 1 de los 160 videos dirige el malestar contra la comparación y los estándares de las redes. La crítica a esta forma de mostrar el afecto se publica poco dentro de ella.'
       }
     ]
   },
 
   plataformas: {
     titulo: 'La idea de partida: «perfección estática» frente a «intimidad mimética»',
-    texto: 'La ficha del proyecto proponía que Instagram modela una «perfección estática» y TikTok una «intimidad mimética». Esa idea se sostiene como percepción de los estudiantes, pero no como diferencia de naturaleza del contenido. En los videos, lo que sí distingue a las plataformas es el dolor expuesto y la ruptura como crecimiento (TikTok) y, con pocos casos, el yo como marca (Instagram). La intimidad de TikTok aparece como vulnerabilidad expuesta, no como más imitación; y la imitación es más frecuente en Instagram, pero en buena parte por un bloque de videos de humor y por quién codificó.',
+    texto: 'La ficha del proyecto proponía que Instagram modela una «perfección estática» (todo cuidado y quieto, como una vitrina) y TikTok una «intimidad mimética» (cercanía que se logra imitando lo que otras personas ya hicieron). Esa idea se sostiene como percepción de los estudiantes, pero no como diferencia de naturaleza del contenido. En los videos, lo que sí distingue a las plataformas es el dolor expuesto y la ruptura como crecimiento (TikTok) y, con pocos casos, el yo como marca (Instagram). La intimidad de TikTok aparece como vulnerabilidad expuesta, no como más imitación; y las plantillas imitadas son más frecuentes en Instagram, pero en buena parte por un grupo de videos de humor y por quién marcó los videos.',
     percibido: 'Lo que perciben los estudiantes: Instagram es más exigente (63,2 % siente más presión por publicar algo «perfecto») y TikTok es más espontáneo (41,2 %).',
-    mostrado: 'Lo que muestran los videos: sin diferencia clara en estetización del yo ni en felicidad como rendimiento; diferencias reales solo en el dolor expuesto y la ruptura como crecimiento.'
+    mostrado: 'Lo que muestran los videos: sin diferencia clara en cuánto se embellece la vida de pareja ni en mostrar la felicidad como logro; diferencias reales solo en el dolor expuesto y la ruptura como crecimiento.'
   },
 
   limites: [
     'La encuesta es una muestra voluntaria de un solo programa (Psicología, Areandina Pereira), con 86,8 % de mujeres: no representa a todos los estudiantes.',
-    'Varias escalas de la encuesta tienen baja consistencia interna o solo dos ítems; por eso destacamos porcentajes e ítems y no promedios de escalas completas.',
+    'Varias escalas de la encuesta no miden con suficiente precisión o tienen solo dos preguntas; por eso destacamos porcentajes y preguntas por separado y no promedios de escalas completas.',
     'Es un estudio descriptivo y exploratorio: las asociaciones no son causas.',
     'Los videos son de pareja y estilo de vida con mucha interacción; no representan todo lo que circula. Las cifras de interacción de TikTok e Instagram no son comparables entre sí.',
-    'La codificación la hicimos tres codificadores y los criterios para aplicar algunos códigos variaron entre nosotros. No se calculó el acuerdo entre codificadores. Una auditoría parcial del código de formato prestado coincidió en 73 % de los casos decididos.',
-    'El análisis de lenguaje con n-gramas y modelado de tópicos, previsto en la ficha, no se aplicó porque el corpus de texto es pequeño (34 transcripciones).',
+    'Tres personas marcamos los videos con un libro de códigos (una lista de ideas que buscamos en cada video) y los criterios para aplicar algunos códigos variaron entre quienes marcamos. No se calculó cuánto coincidimos. Una revisión parcial de la marca «plantilla imitada» coincidió en 73 % de los casos en que se decidió.',
+    'Un análisis automático del lenguaje que estaba previsto en la ficha del proyecto no se aplicó porque hay pocos textos transcritos (34 transcripciones).',
     'Las lecturas de «qué significa» son interpretaciones del equipo; las hipótesis se marcan como tales.'
   ],
 
@@ -123,10 +123,9 @@ window.CONCLUSIONES = {
     preguntas: [
       '¿Es una escena o un día cualquiera?',
       '¿Está pidiendo que lo reconozcan?',
-      '¿El formato es prestado? ¿Cuántas personas más lo hicieron igual?',
+      '¿Es una plantilla que ya usaron otras personas (un baile, un audio, una frase de moda)?',
       '¿Qué dice que debe ser el amor, y a quién se lo exige?',
       '¿Es un chiste o una norma dicha como chiste?'
-    ],
-    bienestar: 'Si algo de lo que ves en redes te pesa, puedes buscar apoyo psicológico en Bienestar Universitario (contacto por definir).'
+    ]
   }
 };

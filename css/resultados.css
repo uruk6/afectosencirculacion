@@ -93,7 +93,6 @@
 .escenario__mundo {
   position: absolute;
   inset: 0;
-  transition: transform 600ms var(--curva);
 }
 
 .escenario__lienzo {
@@ -183,7 +182,7 @@
   scroll-margin-top: var(--altura-cabecera);
 }
 
-.escena:not([data-abierto]) .panel {
+.escena:not([data-ficha]) .panel {
   display: none;
 }
 
@@ -253,6 +252,184 @@
   text-align: right;
 }
 
+/* --- Universo de un tema: un punto por cada parte --- */
+
+.escenario__satelites {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.satelite {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+  border: 2px solid var(--ambar);
+  border-radius: 50%;
+  background: var(--fondo);
+  color: var(--color-texto);
+  cursor: pointer;
+  box-shadow: 0 0 0 5px transparent;
+  transition: background-color var(--t-rapido) var(--curva), color var(--t-rapido) var(--curva), box-shadow var(--t-medio) var(--curva);
+}
+
+.satelite__numero {
+  font-family: var(--fuente-titulos);
+  font-weight: 600;
+  font-size: var(--fs-500);
+  line-height: 1;
+}
+
+.satelite__etiqueta {
+  position: absolute;
+  width: max-content;
+  max-width: 9.5rem;
+  padding: 0.2em 0.7em;
+  border-radius: var(--radio-m);
+  background: var(--fondo);
+  border: 1px solid var(--borde);
+  font-size: var(--fs-300);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--color-texto);
+  text-align: center;
+}
+
+.satelite[data-lado="der"] .satelite__etiqueta { left: calc(100% + 0.5rem); text-align: left; }
+.satelite[data-lado="izq"] .satelite__etiqueta { right: calc(100% + 0.5rem); text-align: right; }
+.satelite[data-lado="arriba"] .satelite__etiqueta { bottom: calc(100% + 0.5rem); left: 50%; transform: translateX(-50%); }
+.satelite[data-lado="abajo"] .satelite__etiqueta { top: calc(100% + 0.5rem); left: 50%; transform: translateX(-50%); }
+
+.satelite:hover,
+.satelite:focus-visible {
+  box-shadow: 0 0 0 5px var(--borde);
+}
+
+.satelite[aria-pressed="true"] {
+  background: var(--ambar);
+  color: var(--tinta);
+}
+
+.universo__titulo {
+  position: absolute;
+  z-index: 3;
+  width: min(15rem, 60%);
+  transform: translateX(-50%);
+  padding: var(--s-2) var(--s-3);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-m);
+  background: var(--fondo);
+  text-align: center;
+  pointer-events: none;
+}
+
+.universo__titulo[hidden] {
+  display: none;
+}
+
+.universo__nombre {
+  font-size: var(--fs-300);
+  color: var(--ambar);
+  font-weight: 600;
+}
+
+.universo__pregunta {
+  font-family: var(--fuente-titulos);
+  font-size: var(--fs-500);
+  line-height: 1.15;
+  color: var(--color-texto);
+}
+
+.escenario__volver {
+  position: absolute;
+  z-index: 4;
+  top: var(--s-3);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.escenario__volver[hidden] {
+  display: none;
+}
+
+/* En pantallas angostas las partes del tema van en una lista de botones bajo el cuerpo */
+.universo__lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  width: min(calc(100% - 2 * var(--gutter)), 44rem);
+  margin: var(--s-3) auto 0;
+}
+
+.universo__lista[hidden] {
+  display: none;
+}
+
+.universo__lista .satelite {
+  position: static;
+  transform: none;
+  width: auto;
+  height: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-1) var(--s-3) var(--s-1) var(--s-1);
+  border-radius: var(--radio-pildora);
+}
+
+.universo__lista .satelite__numero {
+  display: grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  background: var(--ambar);
+  color: var(--tinta);
+  font-size: var(--fs-400);
+}
+
+.universo__lista .satelite__etiqueta {
+  position: static;
+  width: auto;
+  max-width: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  transform: none;
+  text-align: left;
+}
+
+.universo__lista .satelite[data-lado] .satelite__etiqueta {
+  position: static;
+  transform: none;
+  left: auto;
+  right: auto;
+  top: auto;
+  bottom: auto;
+}
+
+.universo__lista .satelite[aria-pressed="true"] .satelite__etiqueta {
+  color: var(--tinta);
+}
+
+.panel__cifra {
+  margin-top: var(--s-2);
+  font-family: var(--fuente-titulos);
+  font-size: var(--fs-500);
+  color: var(--ambar);
+}
+
+.panel__subtitulo {
+  margin-top: var(--s-3);
+  font-size: var(--fs-500);
+}
+
 /* --- Vista de lista (equivalente accesible de la cartografía) --- */
 
 .vista-lista {
@@ -292,6 +469,11 @@
 
 .bloque .boton {
   margin-top: var(--s-4);
+}
+
+.boton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .boton[aria-disabled="true"] {
@@ -335,27 +517,40 @@
     right: -22cqw;
   }
 
-  /* Al elegir un punto el cuerpo se corre a la izquierda lo justo para dejar sitio a la ficha */
-  .escena[data-abierto]:not([data-vista="lista"]) {
-    --ancho-cuerpo: calc(0.8 * var(--alto-escena));
-    --desplaza: max(0px, calc(var(--ancho-cuerpo) / 2 + var(--s-5) + var(--gutter) + var(--ancho-panel) - 50vw));
-  }
-
-  .escena:not([data-vista="lista"]) .escenario__mundo {
-    transform: translateX(calc(-1 * var(--desplaza, 0px)));
-  }
-
   .escena:not([data-vista="lista"]) .escena__intro {
     z-index: 2;
     align-self: start;
     justify-self: start;
-    width: clamp(12rem, calc(50vw - var(--desplaza, 0px) - 0.29 * var(--alto-escena) - var(--gutter) - var(--s-5)), 24rem);
+    width: clamp(12rem, calc(50vw - 0.29 * var(--alto-escena) - var(--gutter) - var(--s-5)), 24rem);
     margin: var(--s-6) 0 0 var(--gutter);
     padding: 0;
   }
 
-  .escena[data-abierto]:not([data-vista="lista"]) .escena__intro .portada-cuerpo__lead {
+  /* Con un tema abierto el espacio es del universo: el texto de entrada se aparta y los controles bajan a la derecha */
+  .escena[data-abierto]:not([data-vista="lista"]) .escena__intro {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .escena[data-abierto]:not([data-vista="lista"]) .cartografia__leyenda,
+  .escena[data-abierto]:not([data-vista="lista"]) .escena__nota {
     display: none;
+  }
+
+  .escena[data-abierto]:not([data-vista="lista"]) .escena__controles {
+    justify-self: end;
+    width: var(--ancho-panel);
+    margin: 0 var(--gutter) 4rem 0;
+  }
+
+  .escena[data-abierto]:not([data-vista="lista"]) .panel {
+    max-height: calc(100% - 2 * var(--s-5) - 10rem);
+  }
+
+  .escena[data-abierto]:not([data-vista="lista"]) .escenario__volver {
+    left: var(--gutter);
+    transform: none;
   }
 
   .escena:not([data-vista="lista"]) .escena__controles {
@@ -391,7 +586,7 @@
     transition: opacity 320ms var(--curva), transform 520ms var(--curva), visibility 0s linear 0s;
   }
 
-  .escena:not([data-abierto]):not([data-vista="lista"]) .panel {
+  .escena:not([data-ficha]):not([data-vista="lista"]) .panel {
     display: block;
     opacity: 0;
     visibility: hidden;

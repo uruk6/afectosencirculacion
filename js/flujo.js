@@ -1,4 +1,5 @@
-// Capa "Qué temas viajan juntos": curvas cuadráticas animadas entre nodos de la cartografía.
+// Capa de la cartografía sobre el cuerpo: líneas entre temas que aparecen juntos en un mismo video
+// y, cuando se abre un tema, las líneas del «universo» que lo rodea.
 (function () {
   'use strict';
 
@@ -11,9 +12,7 @@
       this.ancho = 0;
       this.alto = 0;
       this.dpr = 1;
-      this.guionCurva = [2, 9];
-      this.guionVacio = [];
-      this.colores = { violeta: '', amarillo: '' };
+      this.colores = { violeta: '', amarillo: '', fondo: '', texto: '' };
       this.fuenteTexto = 'sans-serif';
 
       this.leerColores();
@@ -24,6 +23,8 @@
       const estilos = getComputedStyle(this.canvas);
       this.colores.violeta = estilos.getPropertyValue('--part-violeta').trim();
       this.colores.amarillo = estilos.getPropertyValue('--part-amarillo').trim();
+      this.colores.fondo = estilos.getPropertyValue('--fondo').trim();
+      this.colores.texto = estilos.getPropertyValue('--color-texto').trim();
       this.fuenteTexto =
         estilos.getPropertyValue('--fuente-texto').trim() ||
         estilos.fontFamily ||
@@ -44,20 +45,29 @@
       this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
     }
 
-    dibujar({ nodos, pares, tiempo = 0, visible } = {}) {
+    // nodos: [{ id, x, y, activo }] ya en pantalla; pares: [{ a, b, videos }]
+    // opciones.extras(ctx, colores): dibuja encima, también en coordenadas de pantalla.
+    dibujar({ nodos, pares, tiempo = 0, visible, extras } = {}) {
       const ctx = this.ctx;
+      ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
       ctx.clearRect(0, 0, this.ancho, this.alto);
 
-      if (!visible || !Array.isArray(nodos) || !Array.isArray(pares) || pares.length === 0) {
-        return;
+      if (visible && Array.isArray(nodos) && Array.isArray(pares) && pares.length > 0) {
+        this.dibujarPares(ctx, nodos, pares, tiempo);
       }
 
+      if (typeof extras === 'function') {
+        extras(ctx, this.colores, tiempo);
+      }
+      ctx.setLineDash([]);
+      ctx.globalAlpha = 1;
+    }
+
+    dibujarPares(ctx, nodos, pares, tiempo) {
       const mapaNodos = new Map();
       for (let i = 0; i < nodos.length; i++) {
         const n = nodos[i];
-        if (n && n.id != null) {
-          mapaNodos.set(n.id, n);
-        }
+        if (n && n.id != null) mapaNodos.set(n.id, n);
       }
 
       let maxVideos = 0;
@@ -67,19 +77,17 @@
       }
       if (maxVideos <= 0) maxVideos = 1;
 
+      // Las tres conexiones más fuertes se dibujan en amarillo; el resto, en violeta
+      const ordenadas = pares.map((p) => Number(p && p.videos) || 0).sort((a, b) => b - a);
+      const umbralFuerte = ordenadas[Math.min(2, ordenadas.length - 1)];
+
+      const etiquetas = [];
       ctx.lineCap = 'round';
-      ctx.setLineDash(this.guionCurva);
-      ctx.lineDashOffset = -tiempo * 40;
-      ctx.strokeStyle = this.colores.violeta;
-      ctx.fillStyle = this.colores.amarillo;
-      ctx.font = `12px ${this.fuenteTexto}`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
+      ctx.setLineDash([]);
 
       for (let k = 0; k < pares.length; k++) {
         const par = pares[k];
         if (!par) continue;
-
         const a = mapaNodos.get(par.a);
         const b = mapaNodos.get(par.b);
         if (!a || !b) continue;
@@ -90,39 +98,59 @@
         if (distancia === 0) continue;
 
         const videos = Number(par.videos) || 0;
+        const fuerte = videos >= umbralFuerte;
         const lado = k % 2 === 0 ? 1 : -1;
-        const desp = 0.18 * distancia * lado;
+        const desp = (0.24 + 0.1 * (k % 3)) * distancia * lado;
         const cx = (a.x + b.x) * 0.5 + (-dy / distancia) * desp;
         const cy = (a.y + b.y) * 0.5 + (dx / distancia) * desp;
 
         const tocaActivo = Boolean(a.activo || b.activo);
-        ctx.globalAlpha = tocaActivo ? 0.9 : 0.35;
-        ctx.lineWidth = 1 + 5 * (videos / maxVideos);
+        const hayActivo = nodos.some((n) => n.activo);
+        ctx.globalAlpha = hayActivo ? (tocaActivo ? 0.95 : 0.2) : (fuerte ? 0.9 : 0.55);
+        ctx.strokeStyle = fuerte ? this.colores.amarillo : this.colores.violeta;
+        ctx.lineWidth = 1.5 + 11 * (videos / maxVideos);
 
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
         ctx.quadraticCurveTo(cx, cy, b.x, b.y);
         ctx.stroke();
 
-        const t = ((tiempo * 0.15) + k * 0.29) % 1;
+        // Una chispa recorre la línea para dar sentido de «circulación»
+        const t = ((tiempo * 0.12) + k * 0.29) % 1;
         const u = 1 - t;
         const px = u * u * a.x + 2 * u * t * cx + t * t * b.x;
         const py = u * u * a.y + 2 * u * t * cy + t * t * b.y;
-
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = this.colores.texto;
         ctx.beginPath();
-        ctx.arc(px, py, 3, 0, DOS_PI);
+        ctx.arc(px, py, 2.6, 0, DOS_PI);
         ctx.fill();
 
-        if (tocaActivo) {
-          const mx = 0.25 * a.x + 0.5 * cx + 0.25 * b.x;
-          const my = 0.25 * a.y + 0.5 * cy + 0.25 * b.y;
-          ctx.fillText(String(videos), mx, my);
-        }
+        const mx = 0.25 * a.x + 0.5 * cx + 0.25 * b.x;
+        const my = 0.25 * a.y + 0.5 * cy + 0.25 * b.y;
+        etiquetas.push({ x: mx, y: my, videos, fuerte, tenue: hayActivo && !tocaActivo });
       }
 
-      ctx.setLineDash(this.guionVacio);
-      ctx.lineDashOffset = 0;
-      ctx.globalAlpha = 1;
+      // Cada línea lleva su cifra: cuántos videos hablan a la vez de los dos temas
+      ctx.font = `600 13px ${this.fuenteTexto}`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      for (let i = 0; i < etiquetas.length; i++) {
+        const e = etiquetas[i];
+        if (e.tenue) continue;
+        const texto = String(e.videos);
+        const w = ctx.measureText(texto).width + 14;
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = this.colores.fondo;
+        ctx.beginPath();
+        ctx.roundRect(e.x - w / 2, e.y - 11, w, 22, 11);
+        ctx.fill();
+        ctx.strokeStyle = e.fuerte ? this.colores.amarillo : this.colores.violeta;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.fillStyle = this.colores.texto;
+        ctx.fillText(texto, e.x, e.y + 0.5);
+      }
     }
   }
 

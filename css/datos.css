@@ -326,3 +326,20 @@ blockquote.cita,
     transition: none;
   }
 }
+
+/* Glosario de cada tema (ficha de la cartografía y página del tema) */
+.panel__terminos {
+  margin-top: var(--s-4);
+  display: grid;
+  gap: var(--s-2);
+}
+
+.panel__terminos dt {
+  font-weight: 700;
+  color: var(--ambar);
+}
+
+.panel__terminos dd {
+  margin: 0 0 var(--s-2);
+  color: var(--color-suave);
+}

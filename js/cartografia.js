@@ -1,3 +1,5 @@
+// Cartografía del cuerpo. Al elegir un punto la cámara se acerca a él y a su alrededor aparece un
+// «universo»: un punto por cada parte del tema. Al elegir uno se abre su ficha.
 (() => {
   document.addEventListener('DOMContentLoaded', () => {
     const contenedor = document.querySelector('[data-cartografia]');
@@ -12,19 +14,25 @@
     const vistaLista = seccion.querySelector('[data-lista]');
     const leyenda = seccion.querySelector('.cartografia__leyenda');
     const botonCerrar = panel ? panel.querySelector('[data-cerrar]') : null;
+    const botonVolver = contenedor.querySelector('[data-volver]');
     const estado = seccion.querySelector('[data-estado]');
 
     if (!escenario || !canvasSilueta || !canvasFlujo || !contenedorNodos || !panel) return;
 
     const panelContenido = panel.querySelector('.panel__contenido');
-    // Lienzo donde se dibujan la silueta y el flujo: los nodos se miden respecto de él.
     const lienzo = canvasSilueta.parentElement;
-    // En pantallas grandes la ficha queda al lado del cuerpo; en las demás, debajo.
+    const capaSatelites = lienzo.querySelector('[data-satelites]');
+    const tituloUniverso = lienzo.querySelector('[data-universo-titulo]');
+    const listaSatelites = contenedor.querySelector('[data-satelites-lista]');
+
     const escenaCompleta = window.matchMedia('(min-width: 1200px) and (min-height: 780px)');
+    const pantallaAncha = window.matchMedia('(min-width: 700px)');
+    const mediaReducido = window.matchMedia('(prefers-reduced-motion: reduce)');
 
     const temas = Array.isArray(window.TEMAS) ? window.TEMAS : [];
     const baseVideos = window.BASE_VIDEOS || { total: 0, tiktok: 0, instagram: 0 };
     const pares = Array.isArray(window.PARES) ? window.PARES : [];
+    const nombresTema = new Map(temas.map((t) => [t.id, t.region]));
 
     const silueta = new Silueta(canvasSilueta);
     const flujo = new Flujo(canvasFlujo);
@@ -33,7 +41,8 @@
     let capa = 'cuerpo';
     let vista = 'cartografia';
     let temaActivo = null;
-    let temaFoco = null;
+    let seccionActiva = null;
+    let satelites = [];
 
     let fuerza = 0;
     let fuerzaObjetivo = 0;
@@ -43,7 +52,8 @@
     let ultimoTiempo = 0;
     let tiempoActual = 0;
 
-    const mediaReducido = window.matchMedia('(prefers-reduced-motion: reduce)');
+    // Cámara: un punto P del mundo se ve en (P − F)·s + C
+    const cam = { s: 1, cx: 0, cy: 0, fx: 0, fy: 0, sObj: 1, cxObj: 0, cyObj: 0 };
     const botonesNodo = new Map();
 
     const esEstatico = () => mediaReducido.matches;
@@ -69,53 +79,153 @@
     };
 
     const formatearPorcentaje = (pct) => pct.toFixed(1).replace('.', ',');
+    const limitar = (v, a, b) => Math.min(b, Math.max(a, v));
+
+    // --- Geometría -----------------------------------------------------------------
 
     // Los nodos viven en un marco 4:5 centrado en la escena; el lienzo es más ancho que ese marco.
-    // Se suma el desfase del marco para dibujar sobre los puntos del cuerpo (la resta no cambia con el desplazamiento).
     const origenNodos = () => {
       const marco = contenedorNodos.getBoundingClientRect();
       const base = lienzo.getBoundingClientRect();
       return { x: marco.left - base.left, y: marco.top - base.top };
     };
 
-    const posicionNodo = (tema, origen) => {
-      const boton = botonesNodo.get(tema.id);
-      if (boton && boton.offsetWidth > 0) {
-        return { x: origen.x + boton.offsetLeft, y: origen.y + boton.offsetTop };
+    const posicionBase = (tema, origen) => ({
+      x: origen.x + (tema.x / 100) * contenedorNodos.clientWidth,
+      y: origen.y + (tema.y / 100) * contenedorNodos.clientHeight
+    });
+
+    const aPantalla = (p) => ({
+      x: (p.x - cam.fx) * cam.s + cam.cx,
+      y: (p.y - cam.fy) * cam.s + cam.cy
+    });
+
+    const centroLienzo = () => ({ x: lienzo.clientWidth / 2, y: lienzo.clientHeight / 2 });
+
+    const zoomObjetivo = () => (pantallaAncha.matches ? 2.5 : 2.1);
+
+    // Hacia dónde mira la cámara: el centro de la escena y, si hay ficha a un lado, el centro del espacio libre
+    const centroObjetivo = () => {
+      const c = centroLienzo();
+      if (seccionActiva && escenaCompleta.matches) {
+        c.x -= (panel.offsetWidth + 24) / 2;
       }
-      return {
-        x: origen.x + (tema.x / 100) * contenedorNodos.clientWidth,
-        y: origen.y + (tema.y / 100) * contenedorNodos.clientHeight
-      };
+      return c;
     };
 
-    const obtenerFocoPx = () => {
-      if (!temaFoco) return null;
-      return posicionNodo(temaFoco, origenNodos());
+    const posicionNodoMundo = (tema) => posicionBase(tema, origenNodos());
+
+    // --- Dibujo ----------------------------------------------------------------------
+
+    const progresoUniverso = () => {
+      const sObj = zoomObjetivo();
+      return limitar((cam.s - 1) / (sObj - 1), 0, 1);
     };
 
-    const obtenerNodosPx = () => {
+    const radioUniverso = () => {
+      const alto = lienzo.clientHeight;
+      const ancho = escenario.clientWidth;
+      return pantallaAncha.matches
+        ? limitar(Math.min(alto * 0.34, ancho * 0.27), 150, 270)
+        : limitar(ancho * 0.36, 110, 170);
+    };
+
+    const nodosPantalla = () => {
       const origen = origenNodos();
       return temas.map((tema) => {
-        const { x, y } = posicionNodo(tema, origen);
-        return { id: tema.id, x, y, activo: tema.id === temaActivo };
+        const p = aPantalla(posicionBase(tema, origen));
+        return { id: tema.id, x: p.x, y: p.y, activo: tema.id === temaActivo };
+      });
+    };
+
+    const centroUniversoPantalla = () => {
+      const tema = temas.find((t) => t.id === temaActivo);
+      return tema ? aPantalla(posicionNodoMundo(tema)) : centroLienzo();
+    };
+
+    const dibujarExtras = (ctx, colores) => {
+      if (!satelites.length) return;
+      const c = centroUniversoPantalla();
+      const u = progresoUniverso();
+      const R = radioUniverso() * u;
+      if (R < 4) return;
+      ctx.globalAlpha = 0.35 * u;
+      ctx.strokeStyle = colores.amarillo;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 7]);
+      ctx.beginPath();
+      ctx.arc(c.x, c.y, R, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.globalAlpha = 0.5 * u;
+      satelites.forEach((s) => {
+        ctx.beginPath();
+        ctx.moveTo(c.x, c.y);
+        ctx.lineTo(c.x + Math.cos(s.angulo) * R, c.y + Math.sin(s.angulo) * R);
+        ctx.stroke();
+      });
+      ctx.globalAlpha = 1;
+    };
+
+    const actualizarDom = () => {
+      const origen = origenNodos();
+      temas.forEach((tema) => {
+        const boton = botonesNodo.get(tema.id);
+        if (!boton) return;
+        const p = aPantalla(posicionBase(tema, origen));
+        boton.style.left = `${p.x - origen.x}px`;
+        boton.style.top = `${p.y - origen.y}px`;
+      });
+
+      if (!satelites.length) return;
+      const c = centroUniversoPantalla();
+      const u = progresoUniverso();
+      const R = radioUniverso() * u;
+      const orbita = pantallaAncha.matches;
+
+      if (tituloUniverso) {
+        tituloUniverso.style.left = `${c.x}px`;
+        tituloUniverso.style.top = `${c.y + 38}px`;
+        tituloUniverso.style.opacity = String(limitar((u - 0.5) * 2, 0, 1));
+      }
+
+      if (!orbita) return;
+      satelites.forEach((s) => {
+        const x = c.x + Math.cos(s.angulo) * R;
+        const y = c.y + Math.sin(s.angulo) * R;
+        s.boton.style.left = `${x}px`;
+        s.boton.style.top = `${y}px`;
+        s.boton.style.opacity = String(limitar((u - 0.35) * 1.6, 0, 1));
       });
     };
 
     const dibujarCuadro = (tiempo) => {
-      const foco = fuerza > 0.001 ? obtenerFocoPx() : null;
-      silueta.dibujar({ foco, fuerza, tiempo });
+      const tema = temas.find((t) => t.id === temaActivo) || null;
+      const foco = tema && fuerza > 0.001 ? posicionNodoMundo(tema) : null;
+      silueta.dibujar({
+        foco,
+        fuerza,
+        tiempo,
+        camara: { s: cam.s, fx: cam.fx, fy: cam.fy, tx: cam.cx, ty: cam.cy }
+      });
       flujo.dibujar({
-        nodos: obtenerNodosPx(),
+        nodos: nodosPantalla(),
         pares,
         tiempo,
-        visible: capa === 'circulacion'
+        visible: capa === 'circulacion',
+        extras: dibujarExtras
       });
+      actualizarDom();
     };
+
+    const camaraEnMovimiento = () =>
+      Math.abs(cam.s - cam.sObj) > 0.003 ||
+      Math.abs(cam.cx - cam.cxObj) > 0.4 ||
+      Math.abs(cam.cy - cam.cyObj) > 0.4;
 
     const necesitaAnimacion = () => {
       const animandoFuerza = Math.abs(fuerza - fuerzaObjetivo) > 0.002;
-      return capa === 'circulacion' || animandoFuerza || plataforma !== 'instagram';
+      return capa === 'circulacion' || animandoFuerza || camaraEnMovimiento() || plataforma !== 'instagram';
     };
 
     const detenerBucle = () => {
@@ -123,6 +233,24 @@
       cancelAnimationFrame(idCuadro);
       enBucle = false;
       ultimoTiempo = 0;
+    };
+
+    const retirarSateliteSiCorresponde = () => {
+      if (!temaActivo && satelites.length && cam.s < 1.02) {
+        vaciarUniverso();
+      }
+    };
+
+    const avanzarCamara = (dt) => {
+      const k = 1 - Math.pow(1 - 0.09, dt * 60);
+      cam.s += (cam.sObj - cam.s) * k;
+      cam.cx += (cam.cxObj - cam.cx) * k;
+      cam.cy += (cam.cyObj - cam.cy) * k;
+      if (!camaraEnMovimiento()) {
+        cam.s = cam.sObj;
+        cam.cx = cam.cxObj;
+        cam.cy = cam.cyObj;
+      }
     };
 
     const bucle = (marca) => {
@@ -139,11 +267,11 @@
 
       const k = 1 - Math.pow(1 - 0.12, dt * 60);
       fuerza += (fuerzaObjetivo - fuerza) * k;
-      if (Math.abs(fuerza - fuerzaObjetivo) <= 0.002) {
-        fuerza = fuerzaObjetivo;
-      }
+      if (Math.abs(fuerza - fuerzaObjetivo) <= 0.002) fuerza = fuerzaObjetivo;
+      avanzarCamara(dt);
 
       dibujarCuadro(tiempo);
+      retirarSateliteSiCorresponde();
 
       if (!necesitaAnimacion()) {
         enBucle = false;
@@ -166,18 +294,31 @@
       if (esEstatico()) {
         detenerBucle();
         fuerza = fuerzaObjetivo;
+        cam.s = cam.sObj;
+        cam.cx = cam.cxObj;
+        cam.cy = cam.cyObj;
         dibujarCuadro(0);
+        retirarSateliteSiCorresponde();
         return;
       }
       dibujarCuadro(tiempoActual);
       iniciarBucle();
     };
 
+    // --- Textos de apoyo -----------------------------------------------------------------
+
+    const textoParesMasFuertes = () => {
+      const ordenados = pares.slice().sort((x, y) => y.videos - x.videos).slice(0, 3);
+      const frases = ordenados.map((p) => `${nombresTema.get(p.a)} y ${nombresTema.get(p.b)} (${p.videos})`);
+      return frases.length ? `Los que más se juntan: ${frases.join('; ')}.` : '';
+    };
+
     const actualizarLeyenda = () => {
       if (!leyenda) return;
       if (capa === 'circulacion') {
         leyenda.textContent =
-          'Cada línea une dos temas que aparecen en un mismo video; cuanto más gruesa, más videos comparten. Muestra qué temas viajan juntos, no cómo se difunden los videos.';
+          `Cada línea une dos temas que aparecen a la vez en un mismo video, y su número dice en cuántos de los ${baseVideos.total} videos pasa. ` +
+          `Cuanto más gruesa, más se juntan. Es igual en Instagram y en TikTok, por eso no cambia con la plataforma. ${textoParesMasFuertes()}`;
       } else {
         const m = obtenerBasePlataforma(plataforma);
         leyenda.textContent =
@@ -189,37 +330,165 @@
       if (estado) estado.textContent = texto;
     };
 
-    const actualizarPanel = (tema, enfocar = false) => {
-      // La ficha entera se muestra u oculta con data-abierto (el cuerpo se corre y la ficha aparece).
-      seccion.toggleAttribute('data-abierto', Boolean(tema));
+    // --- Universo de un tema ---------------------------------------------------------------
 
-      if (!tema) {
-        panelContenido.replaceChildren();
+    function vaciarUniverso() {
+      satelites.forEach((s) => s.boton.remove());
+      satelites = [];
+      if (capaSatelites) capaSatelites.replaceChildren();
+      if (listaSatelites) {
+        listaSatelites.replaceChildren();
+        listaSatelites.hidden = true;
+      }
+      if (tituloUniverso) tituloUniverso.hidden = true;
+    }
+
+    function crearUniverso(tema) {
+      vaciarUniverso();
+      const secciones = typeof window.seccionesTema === 'function' ? window.seccionesTema(tema) : [];
+      const total = secciones.length;
+      const orbita = pantallaAncha.matches;
+      const destino = orbita ? capaSatelites : listaSatelites;
+      if (!destino) return;
+
+      secciones.forEach((sec, i) => {
+        const angulo = -Math.PI / 2 + (i * 2 * Math.PI) / total;
+        const boton = document.createElement('button');
+        boton.type = 'button';
+        boton.className = 'satelite';
+        boton.dataset.seccion = sec.clave;
+        boton.setAttribute('aria-pressed', 'false');
+        const lado = Math.cos(angulo) > 0.35 ? 'der' : (Math.cos(angulo) < -0.35 ? 'izq' : (Math.sin(angulo) < 0 ? 'arriba' : 'abajo'));
+        boton.dataset.lado = lado;
+
+        const numero = document.createElement('span');
+        numero.className = 'satelite__numero';
+        numero.textContent = String(i + 1);
+        numero.setAttribute('aria-hidden', 'true');
+
+        const etiqueta = document.createElement('span');
+        etiqueta.className = 'satelite__etiqueta';
+        etiqueta.textContent = sec.etiqueta;
+
+        boton.append(numero, etiqueta);
+        boton.addEventListener('click', () => abrirSeccion(sec.clave));
+        destino.appendChild(boton);
+        satelites.push({ clave: sec.clave, angulo, boton });
+      });
+
+      if (listaSatelites) listaSatelites.hidden = orbita;
+      if (tituloUniverso) {
+        tituloUniverso.hidden = false;
+        tituloUniverso.querySelector('[data-universo-nombre]').textContent = `${tema.region} · ${tema.nombre}`;
+        tituloUniverso.querySelector('[data-universo-pregunta]').textContent = tema.pregunta;
+      }
+    }
+
+    function abrirSeccion(clave) {
+      const tema = temas.find((t) => t.id === temaActivo);
+      if (!tema) return;
+      seccionActiva = clave;
+      satelites.forEach((s) => s.boton.setAttribute('aria-pressed', String(s.clave === clave)));
+      if (typeof window.renderizarSeccionTema === 'function') {
+        window.renderizarSeccionTema(panelContenido, tema, clave, plataforma);
+      }
+      seccion.setAttribute('data-ficha', '');
+      panel.scrollTop = 0;
+      cam.cxObj = centroObjetivo().x;
+      const etiqueta = satelites.find((s) => s.clave === clave)?.boton.textContent || '';
+      anunciar(`Ficha abierta: ${etiqueta}.`);
+      if (!escenaCompleta.matches) panel.focus({ preventScroll: false });
+      redibujar();
+    }
+
+    function cerrarFicha() {
+      if (!seccionActiva) return false;
+      seccionActiva = null;
+      satelites.forEach((s) => s.boton.setAttribute('aria-pressed', 'false'));
+      seccion.removeAttribute('data-ficha');
+      panelContenido.replaceChildren();
+      cam.cxObj = centroObjetivo().x;
+      anunciar('Ficha cerrada.');
+      redibujar();
+      return true;
+    }
+
+    function abrirTema(tema) {
+      // La cámara sigue donde está: el nuevo foco se fija en el punto que ya ocupa en pantalla
+      const nuevo = posicionNodoMundo(tema);
+      const enPantallaActual = aPantalla(nuevo);
+      cam.fx = nuevo.x;
+      cam.fy = nuevo.y;
+      cam.cx = enPantallaActual.x;
+      cam.cy = enPantallaActual.y;
+
+      temaActivo = tema.id;
+      seccionActiva = null;
+      seccion.removeAttribute('data-ficha');
+      panelContenido.replaceChildren();
+      seccion.setAttribute('data-abierto', '');
+      if (botonVolver) botonVolver.hidden = false;
+
+      cam.sObj = zoomObjetivo();
+      const c = centroLienzo();
+      cam.cxObj = c.x;
+      cam.cyObj = c.y;
+      fuerzaObjetivo = 1;
+
+      botonesNodo.forEach((boton, id) => {
+        boton.setAttribute('aria-pressed', String(id === tema.id));
+        boton.dataset.apagado = id === tema.id ? 'false' : 'true';
+      });
+      crearUniverso(tema);
+      anunciar(`Tema abierto: ${tema.region}, ${tema.nombre}. Elige uno de los puntos que lo rodean.`);
+      if (satelites[0]) satelites[0].boton.focus({ preventScroll: true });
+      actualizarNodos();
+      redibujar();
+    }
+
+    function cerrarTema() {
+      const anterior = temaActivo;
+      cerrarFicha();
+      temaActivo = null;
+      seccion.removeAttribute('data-abierto');
+      if (botonVolver) botonVolver.hidden = true;
+      cam.sObj = 1;
+      cam.cxObj = cam.fx;
+      cam.cyObj = cam.fy;
+      fuerzaObjetivo = 0;
+      botonesNodo.forEach((boton) => {
+        boton.setAttribute('aria-pressed', 'false');
+        boton.removeAttribute('data-apagado');
+      });
+      anunciar('Volviste al cuerpo completo.');
+      actualizarNodos();
+      redibujar();
+      return anterior;
+    }
+
+    const seleccionar = (id) => {
+      if (!id || temaActivo === id) {
+        const anterior = cerrarTema();
+        const boton = anterior ? botonesNodo.get(anterior) : null;
+        if (boton) boton.focus();
         return;
       }
-
-      if (typeof window.renderizarPanelTema === 'function') {
-        window.renderizarPanelTema(panelContenido, tema, plataforma);
-      }
-
-      if (enfocar && !escenaCompleta.matches) {
-        panel.focus({ preventScroll: false });
-      }
+      const tema = temas.find((t) => t.id === id);
+      if (tema) abrirTema(tema);
     };
+
+    // --- Nodos, lista y controles -----------------------------------------------------------
 
     const actualizarNodos = () => {
       temas.forEach((tema) => {
         const boton = botonesNodo.get(tema.id);
         if (!boton) return;
         const { n, m, pct } = obtenerDatosPlataforma(tema, plataforma);
-        const tam = 14 + (30 * pct) / 100;
+        const tam = tema.id === temaActivo ? 46 : 14 + (30 * pct) / 100;
         boton.style.setProperty('--tam', `${tam}px`);
         boton.setAttribute('aria-label', `${tema.region}: ${tema.nombre}, ${n} de ${m} videos`);
-        if (m <= 0 || n <= 0) {
-          boton.dataset.apagado = 'true';
-        } else {
-          boton.removeAttribute('data-apagado');
-        }
+        if (!temaActivo && (m <= 0 || n <= 0)) boton.dataset.apagado = 'true';
+        else if (!temaActivo) boton.removeAttribute('data-apagado');
       });
     };
 
@@ -245,41 +514,16 @@
         resumen.textContent = `${tema.nombre} · ${n} de ${m} videos (${formatearPorcentaje(pct)} %)`;
 
         const encontramos = document.createElement('p');
-        encontramos.textContent = tema.encontramos;
+        encontramos.textContent = tema.queEs || tema.encontramos;
 
         const enlace = document.createElement('a');
         enlace.href = `tema.html?tema=${encodeURIComponent(tema.id)}`;
-        enlace.textContent = 'Ver la página del tema';
+        enlace.textContent = 'Ver el tema completo';
 
         item.append(titulo, resumen, encontramos, enlace);
         lista.appendChild(item);
       });
     };
-
-    const seleccionar = (id) => {
-      const nuevoId = id && temaActivo !== id ? id : null;
-      temaActivo = nuevoId;
-      const tema = temas.find((t) => t.id === temaActivo) || null;
-      if (tema) temaFoco = tema;
-      fuerzaObjetivo = tema ? 1 : 0;
-
-      botonesNodo.forEach((boton, idNodo) => {
-        boton.setAttribute('aria-pressed', String(idNodo === temaActivo));
-      });
-
-      actualizarPanel(tema, Boolean(tema));
-      panel.scrollTop = 0;
-      anunciar(tema ? `Ficha abierta: ${tema.region}, ${tema.nombre}.` : 'Ficha cerrada.');
-      redibujar();
-    };
-
-    if (botonCerrar) {
-      botonCerrar.addEventListener('click', () => {
-        const botonAnterior = temaActivo ? botonesNodo.get(temaActivo) : null;
-        seleccionar(null);
-        if (botonAnterior) botonAnterior.focus();
-      });
-    }
 
     contenedorNodos.replaceChildren();
     temas.forEach((tema) => {
@@ -311,10 +555,19 @@
       botones.forEach((boton) => {
         boton.addEventListener('click', () => {
           const valor = boton.getAttribute(atributo);
-          if (!valor) return;
+          if (!valor || boton.disabled) return;
           botones.forEach((b) => b.setAttribute('aria-pressed', String(b === boton)));
           alCambiar(valor);
         });
+      });
+    };
+
+    // «Qué temas viajan juntos» es igual en las dos plataformas: se desactiva la elección de plataforma
+    const actualizarEstadoPlataforma = () => {
+      const bloqueada = capa === 'circulacion';
+      seccion.querySelectorAll('[data-plataforma]').forEach((b) => {
+        b.disabled = bloqueada;
+        b.title = bloqueada ? 'Esta capa es igual en Instagram y en TikTok' : '';
       });
     };
 
@@ -324,15 +577,13 @@
       actualizarNodos();
       actualizarLeyenda();
       renderizarLista();
-      if (temaActivo) {
-        const tema = temas.find((t) => t.id === temaActivo) || null;
-        actualizarPanel(tema, false);
-      }
+      if (temaActivo && seccionActiva) abrirSeccion(seccionActiva);
       redibujar();
     });
 
     configurarGrupo('data-capa', (valor) => {
       capa = valor;
+      actualizarEstadoPlataforma();
       actualizarLeyenda();
       redibujar();
     });
@@ -352,13 +603,35 @@
       }
     });
 
+    if (botonCerrar) {
+      botonCerrar.addEventListener('click', () => {
+        const activo = satelites.find((s) => s.clave === seccionActiva);
+        cerrarFicha();
+        if (activo) activo.boton.focus();
+      });
+    }
+
+    if (botonVolver) {
+      botonVolver.addEventListener('click', () => {
+        const anterior = cerrarTema();
+        const boton = anterior ? botonesNodo.get(anterior) : null;
+        if (boton) boton.focus();
+      });
+    }
+
     seccion.addEventListener('keydown', (evento) => {
       if (evento.key !== 'Escape' || !temaActivo) return;
       const activo = document.activeElement;
-      if (!escenario.contains(activo) && !panel.contains(activo)) return;
-      const botonAnterior = botonesNodo.get(temaActivo);
-      seleccionar(null);
-      if (botonAnterior) botonAnterior.focus();
+      if (!contenedor.contains(activo)) return;
+      if (seccionActiva) {
+        const boton = satelites.find((s) => s.clave === seccionActiva)?.boton;
+        cerrarFicha();
+        if (boton) boton.focus();
+      } else {
+        const anterior = cerrarTema();
+        const boton = anterior ? botonesNodo.get(anterior) : null;
+        if (boton) boton.focus();
+      }
     });
 
     const observadorVista = new IntersectionObserver((entradas) => {
@@ -368,11 +641,32 @@
     });
     observadorVista.observe(escenario);
 
-    const observadorTamano = new ResizeObserver(() => {
+    const reajustar = () => {
       silueta.redimensionar();
       flujo.redimensionar();
+      const c = centroLienzo();
+      if (temaActivo) {
+        cam.cxObj = centroObjetivo().x;
+        cam.cyObj = c.y;
+        cam.sObj = zoomObjetivo();
+        // Si el espacio cambió de forma, se vuelve a armar el universo para la nueva disposición
+        const tema = temas.find((t) => t.id === temaActivo);
+        const eraOrbita = Boolean(capaSatelites && capaSatelites.children.length);
+        if (tema && eraOrbita !== pantallaAncha.matches) {
+          const guardada = seccionActiva;
+          crearUniverso(tema);
+          if (guardada) abrirSeccion(guardada);
+        }
+      } else {
+        cam.cx = cam.cxObj = c.x;
+        cam.cy = cam.cyObj = c.y;
+        cam.fx = c.x;
+        cam.fy = c.y;
+      }
       redibujar();
-    });
+    };
+
+    const observadorTamano = new ResizeObserver(reajustar);
     observadorTamano.observe(escenario);
 
     document.addEventListener('visibilitychange', () => {
@@ -384,9 +678,15 @@
 
     actualizarNodos();
     actualizarLeyenda();
+    actualizarEstadoPlataforma();
     renderizarLista();
     silueta.redimensionar();
     flujo.redimensionar();
+    {
+      const c = centroLienzo();
+      cam.cx = cam.cxObj = cam.fx = c.x;
+      cam.cy = cam.cyObj = cam.fy = c.y;
+    }
     redibujar();
   });
 })();

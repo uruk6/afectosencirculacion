@@ -3,8 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lo que circula en los videos · Afectos en circulación · Prototipo</title>
+  <title>Lo que circula en los videos · Afectos en circulación</title>
   <meta name="description" content="Cartografía del cuerpo sobre los temas que circulan en videos de pareja con alta interacción en Instagram y TikTok.">
+  <!-- seo -->
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="canonical" href="https://afectosencirculacion.org/cualitativos.html">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_CO">
+  <meta property="og:site_name" content="Afectos en circulación">
+  <meta property="og:title" content="Lo que circula en los videos · Afectos en circulación">
+  <meta property="og:description" content="Cartografía del cuerpo sobre los temas que circulan en videos de pareja con alta interacción en Instagram y TikTok.">
+  <meta property="og:url" content="https://afectosencirculacion.org/cualitativos.html">
+  <meta property="og:image" content="https://afectosencirculacion.org/assets/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- /seo -->
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/sitio.css">
@@ -22,7 +37,6 @@
 </head>
 <body class="pagina-cuerpo">
   <a class="saltar-contenido" href="#contenido">Saltar al contenido</a>
-  <div class="banda-ejemplo">Prototipo visual · resultados reales en revisión</div>
 
   <header class="cabecera tema-tinta">
     <a class="logo" href="index.html">
@@ -57,7 +71,7 @@
     <section class="escena cartografia tema-tinta" aria-labelledby="titulo-escena" data-escena>
       <div class="escena__intro">
         <h1 id="titulo-escena">Lo que circula en los videos</h1>
-        <p class="portada-cuerpo__lead">160 videos de pareja con mucha interacción, 73 de TikTok y 87 de Instagram. Elige un punto del cuerpo para ver qué encontramos.</p>
+        <p class="portada-cuerpo__lead">160 videos de pareja con mucha interacción, 73 de TikTok y 87 de Instagram. Elige un punto del cuerpo: la imagen se acerca y cada parte del tema aparece como un punto para explorar.</p>
         <nav class="subnav" aria-label="Resultados">
           <ul class="subnav__lista">
             <li><a class="subnav__enlace" href="resultados.html">Resumen</a></li>
@@ -92,13 +106,20 @@
             <div class="escenario__lienzo">
               <canvas class="escenario__campo" data-silueta aria-hidden="true"></canvas>
               <canvas class="escenario__flujo" data-flujo aria-hidden="true"></canvas>
+              <div class="escenario__satelites" data-satelites role="group" aria-label="Partes del tema elegido"></div>
+              <div class="universo__titulo" data-universo-titulo hidden>
+                <p class="universo__nombre" data-universo-nombre></p>
+                <p class="universo__pregunta" data-universo-pregunta></p>
+              </div>
             </div>
             <div class="escenario__nodos" data-nodos></div>
           </div>
+          <button class="boton boton--chico escenario__volver" type="button" data-volver hidden>← Volver al cuerpo</button>
         </div>
+        <div class="universo__lista" data-satelites-lista role="group" aria-label="Partes del tema elegido" hidden></div>
         <aside class="panel" id="panel-tema" aria-label="Ficha del tema elegido" tabindex="-1">
           <div class="panel__barra">
-            <button class="boton boton--secundario boton--chico panel__cerrar" type="button" data-cerrar>Cerrar</button>
+            <button class="boton boton--secundario boton--chico panel__cerrar" type="button" data-cerrar>Cerrar ficha</button>
           </div>
           <article class="panel__contenido"></article>
         </aside>
